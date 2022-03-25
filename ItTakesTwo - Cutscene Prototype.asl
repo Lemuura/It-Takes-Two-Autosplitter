@@ -53,8 +53,11 @@ startup
 	});
 
 	// Optional Settings
-	//settings.Add("commGold", false, "Comm Gold Resets");
-	//settings.Add("levelReset", false, "IL Resets");
+	settings.Add("commGold", false, "Comm Gold Resets");
+	settings.Add("levelReset", false, "IL Resets");
+
+	// Optional Splits
+	settings.Add("optionalSplits", false, "Optional Splits");
 
 	// DEBUG
 	settings.Add("debugTextComponents", false, "[DEBUG] Show tracked values in layout");
@@ -68,50 +71,6 @@ init
 	vars.delayTimerTimestamp = 0;
 	vars.lastCutscene = "";
 	vars.lastCutsceneOld = "";
-
-	vars.startLevels = new List<string>() 
-	{ 
-		"/Game/Maps/Shed/Awakening/Awakening_BP", 
-		"/Game/Maps/Tree/Approach/Approach_BP",
-		"/Game/Maps/PlayRoom/PillowFort/PillowFort_BP",
-		"/Game/Maps/Clockwork/Outside/Clockwork_Tutorial_BP",
-		"/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP",
-		"/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP",
-		"/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP"
-	};
-
-	vars.commStartLevels = new List<string>()
-	{
-		"/Game/Maps/Shed/Vacuum/Vacuum_BP",
-		"/Game/Maps/Shed/Main/Main_Hammernails_BP",
-		"/Game/Maps/Shed/Main/Main_Grindsection_BP",
-		"/Game/Maps/Tree/SquirrelHome/SquirrelHome_BP_Mech",
-		"/Game/Maps/Tree/WaspNest/WaspsNest_BP",
-		"/Game/Maps/Tree/Boss/WaspQueenBoss_BP",
-		"/Game/Maps/Tree/Escape/Escape_BP",
-		"/Game/Maps/PlayRoom/Spacestation/Spacestation_Hub_BP",
-		"/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP",
-		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Trainstation_BP",
-		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Dinoland_BP",
-		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Pirate_BP",
-		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Circus_BP",
-		"/Game/Maps/PlayRoom/Courtyard/Castle_Courtyard_BP",
-		"/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_BP",
-		"/Game/Maps/PlayRoom/Shelf/Shelf_BP",
-		"/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_CrushingTrapRoom_BP",
-		"/Game/Maps/Clockwork/UpperTower/Clockwork_ClockTowerLastBoss_BP",
-		"/Game/Maps/SnowGlobe/Town/SnowGlobe_Town_BP",
-		"/Game/Maps/SnowGlobe/Lake/Snowglobe_Lake_BP",
-		"/Game/Maps/SnowGlobe/Mountain/SnowGlobe_Mountain_BP",
-		"/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_BP",
-		"/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Stealth_BP",
-		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_BP",
-		"/Game/Maps/Garden/Greenhouse/Garden_Greenhouse_BP",
-		"/Game/Maps/Music/Backstage/Music_Backstage_Tutorial_BP",
-		"/Game/Maps/Music/Classic/Music_Classic_Organ_BP",
-		"/Game/Maps/Music/Nightclub/Music_Nightclub_BP",
-		"/Game/Maps/Music/Ending/Music_Ending_BP"
-	};
 }
 
 isLoading
@@ -171,13 +130,245 @@ update
 
 reset
 {
-	if(current.checkPointString == "Awakening_Start" && old.checkPointString != "Awakening_Start")
+	// Reset in Wake-up Call
+	if ((current.checkPointString == "Awakening_Start" && old.checkPointString != "Awakening_Start") || 
+		(current.checkPointString == "Awakening_Start" && current.isLoading && !old.isLoading))
 		return true;
+
+	if (settings["levelReset"])
+	{
+		if (current.checkPointString == "Gate" && old.checkPointString == "Gate")
+			current.snowGlobeGate = 1;
+
+		if (current.checkPointString == "Tree_Approach_LevelIntro" && old.checkPointString != "Tree_Approach_LevelIntro" && 
+			old.checkPointString != "Stargazing_Meet" && old.checkPointString != "Main Menu")
+			return true;
+
+		if (current.checkPointString == "PillowFort" && old.checkPointString != "PillowFort" && 
+			old.checkPointString != "RealWorld_Exterior_Roof_Crash" && old.checkPointString != "Main Menu")
+			return true;
+
+		if (current.checkPointString == "ClockworkIntro" && old.checkPointString != "ClockworkIntro" && 
+			old.checkPointString != "TherapyRoom_Time_Session" && old.checkPointString != "Main Menu")
+			return true;
+
+		if (current.checkPointString == "Forest Entry" && old.checkPointString != "Forest Entry" && 
+			old.checkPointString != "TherapyRoom_Attraction_Session" && current.snowGlobeGate == 1 && old.checkPointString != "Main Menu")
+		{
+			current.snowGlobeGate = 0;
+			return true;
+		}
+
+		if (current.checkPointString == "Intro" && old.checkPointString != "Intro" && old.checkPointString != "TherapyRoom_Garden_Session" && 
+			current.levelString.ToString() == "/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP" && old.checkPointString != "Main Menu")
+			return true;
+
+		if (current.checkPointString == "ConcertHall_Backstage" && old.checkPointString != "ConcertHall_Backstage" && old.checkPointString != "TherapyRoom_Music" && 
+			old.checkPointString != "Main Menu" || (current.checkPointString == "ConcertHall_Backstage" && current.isLoading && !old.isLoading))
+			return true;
+	}
+
+	if (settings["commGold"])
+	{
+		// Reset the timer in Biting the Dust
+		if ((current.checkPointString == "VacuumIntro" && old.checkPointString != "VacuumIntro") || 
+			(current.checkPointString == "VacuumIntro" && current.isLoading && !old.isLoading))
+			return true;
+
+		// Reset the timer in The Depths
+		if ((current.checkPointString == "MineIntro" && old.checkPointString != "MineIntro") || 
+			(current.checkPointString == "MineIntro" && current.isLoading && !old.isLoading))
+			return true;
+
+		// Reset the timer in Wired Up
+		if ((current.checkPointString == "GrindSection_Start" && old.checkPointString != "GrindSection_Start") || 
+			(current.checkPointString == "GrindSection_Start" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Fresh Air
+		if ((current.checkPointString == "Tree_Approach_LevelIntro" && old.checkPointString != "Tree_Approach_LevelIntro") || 
+			(current.checkPointString == "Tree_Approach_LevelIntro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Captured + Deeply Rooted + Beneath the Ice
+		if ((current.checkPointString == "Entry" && old.checkPointString != "Entry") || 
+			(current.checkPointString == "Entry" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Extermination
+		if ((current.checkPointString == "StartWaspBossPhase1" && old.checkPointString != "StartWaspBossPhase1") || 
+			(current.checkPointString == "StartWaspBossPhase1" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Getaway + Hopscotch + Green Fingers + Frog Pond
+		if ((current.checkPointString == "Intro" && old.checkPointString != "Intro") || 
+			(current.checkPointString == "Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Pillow Fort
+		if ((current.checkPointString == "PillowFort" && old.checkPointString != "PillowFort") || 
+			(current.checkPointString == "PillowFort" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Spaced Out
+		if ((current.checkPointString == "SpaceStationIntro" && old.checkPointString != "SpaceStationIntro") || 
+			(current.checkPointString == "SpaceStationIntro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Train Station
+		if ((current.checkPointString == "Trainstation_Start" && old.checkPointString != "Trainstation_Start") || 
+			(current.checkPointString == "Trainstation_Start" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Dino Land
+		if ((current.checkPointString == "Dinoland_Start" && old.checkPointString != "Dinoland_Start") || 
+			(current.checkPointString == "Dinoland_Start" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Pirates Ahoy
+		if ((current.checkPointString == "Pirate_Part01_Start" && old.checkPointString != "Pirate_Part01_Start") || 
+			(current.checkPointString == "Pirate_Part01_Start" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in The Greatest Show
+		if ((current.checkPointString == "Circus_Start" && old.checkPointString != "Circus_Start") || 
+			(current.checkPointString == "Circus_Start" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Once Upon A Time
+		if ((current.checkPointString == "Castle_Courtyard_Start" && old.checkPointString != "Castle_Courtyard_Start") || 
+			(current.checkPointString == "Castle_Courtyard_Start" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Dungeon Crawler
+		if ((current.checkPointString == "Castle_Dungeon" && old.checkPointString != "Castle_Dungeon") || 
+			(current.checkPointString == "Castle_Dungeon" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in The Queen
+		if ((current.checkPointString == "Shelf_Cutie_Intro" && old.checkPointString != "Shelf_Cutie_Intro1") || 
+			(current.checkPointString == "Shelf_Cutie_Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Gates of Time
+		if ((current.checkPointString == "ClockworkIntro" && old.checkPointString != "ClockworkIntro") || 
+			(current.checkPointString == "ClockworkIntro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Clockworks
+		if ((current.checkPointString == "Crusher Trap Room" && old.checkPointString != "Crusher Trap Room1") || 
+			(current.checkPointString == "Crusher Trap Room" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in A Blast from the Past
+		if ((current.checkPointString == "Boss Intro" && old.checkPointString != "Boss Intro") || 
+			(current.checkPointString == "Boss Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Warming Up
+		if ((current.checkPointString == "Forest Entry" && old.checkPointString != "Forest Entry") || 
+			(current.checkPointString == "Forest Entry" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Winter Village
+		if ((current.checkPointString == "Town Entry" && old.checkPointString != "Town Entry") || 
+			(current.checkPointString == "Town Entry" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Wake-Up Call
+		if ((current.checkPointString == "0. Entry" && old.checkPointString != "0. Entry") || 
+			(current.checkPointString == "0. Entry" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Weed Whacking
+		if ((current.checkPointString == "Shrubbery_Enter" && old.checkPointString != "Shrubbery_Enter") || 
+			(current.checkPointString == "Shrubbery_Enter" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Trespassing
+		if ((current.checkPointString == "MoleTunnels_Level_Intro" && old.checkPointString != "MoleTunnels_Level_Intro") || 
+			(current.checkPointString == "MoleTunnels_Level_Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Affliction
+		if ((current.checkPointString == "Greenhouse_Intro" && old.checkPointString != "Greenhouse_Intro") || 
+			(current.checkPointString == "Greenhouse_Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Setting the Stage
+		if ((current.checkPointString == "ConcertHall_Backstage" && old.checkPointString != "ConcertHall_Backstage") || 
+			(current.checkPointString == "ConcertHall_Backstage" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Rehearsal
+		if ((current.checkPointString == "Tutorial_Intro" && old.checkPointString != "Tutorial_Intro") || 
+			(current.checkPointString == "Tutorial_Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Symphony
+		if ((current.checkPointString == "Classic_01_Attic_Intro" && old.checkPointString != "Classic_01_Attic_Intro") || 
+			(current.checkPointString == "Classic_01_Attic_Intro" && current.isLoading && !old.isLoading)) 
+			return true;
+
+		// Reset the timer in Turn Up
+		if ((current.checkPointString == "RainbowSlide" && old.checkPointString != "RainbowSlide") || 
+			(current.checkPointString == "RainbowSlide" && current.isLoading && !old.isLoading))
+			return true;
+
+		// Reset the timer in A Grand Finale
+		if ((current.checkPointString == "EndingIntro" && old.checkPointString != "EndingIntro") || 
+			(current.checkPointString == "EndingIntro" && current.isLoading && !old.isLoading)) 
+			return true;
+	}
 }
 
 start
 {
 	current.cutsceneCount = 0; // Reset cutscene counter
+
+	vars.startLevels = new List<string>()
+	{
+		"/Game/Maps/Shed/Awakening/Awakening_BP",
+		"/Game/Maps/Tree/Approach/Approach_BP",
+		"/Game/Maps/PlayRoom/PillowFort/PillowFort_BP",
+		"/Game/Maps/Clockwork/Outside/Clockwork_Tutorial_BP",
+		"/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP",
+		"/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP",
+		"/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP"
+	};
+
+	vars.commStartLevels = new List<string>()
+	{
+		"/Game/Maps/Shed/Vacuum/Vacuum_BP",
+		"/Game/Maps/Shed/Main/Main_Hammernails_BP",
+		"/Game/Maps/Shed/Main/Main_Grindsection_BP",
+		"/Game/Maps/Tree/SquirrelHome/SquirrelHome_BP_Mech",
+		"/Game/Maps/Tree/WaspNest/WaspsNest_BP",
+		"/Game/Maps/Tree/Boss/WaspQueenBoss_BP",
+		"/Game/Maps/Tree/Escape/Escape_BP",
+		"/Game/Maps/PlayRoom/Spacestation/Spacestation_Hub_BP",
+		"/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Trainstation_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Dinoland_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Pirate_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Circus_BP",
+		"/Game/Maps/PlayRoom/Courtyard/Castle_Courtyard_BP",
+		"/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_BP",
+		"/Game/Maps/PlayRoom/Shelf/Shelf_BP",
+		"/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_CrushingTrapRoom_BP",
+		"/Game/Maps/Clockwork/UpperTower/Clockwork_ClockTowerLastBoss_BP",
+		"/Game/Maps/SnowGlobe/Town/SnowGlobe_Town_BP",
+		"/Game/Maps/SnowGlobe/Lake/Snowglobe_Lake_BP",
+		"/Game/Maps/SnowGlobe/Mountain/SnowGlobe_Mountain_BP",
+		"/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_BP",
+		"/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Stealth_BP",
+		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_BP",
+		"/Game/Maps/Garden/Greenhouse/Garden_Greenhouse_BP",
+		"/Game/Maps/Music/Backstage/Music_Backstage_Tutorial_BP",
+		"/Game/Maps/Music/Classic/Music_Classic_Organ_BP",
+		"/Game/Maps/Music/Nightclub/Music_Nightclub_BP",
+		"/Game/Maps/Music/Ending/Music_Ending_BP"
+	};
 
 	if (current.isLoading)
     {
