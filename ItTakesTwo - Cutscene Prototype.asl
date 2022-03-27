@@ -53,6 +53,7 @@ startup
 	});
 
 	// Optional Settings
+	settings.Add("cpCount", false, "Checkpoint Counter");
 	settings.Add("commGold", false, "Comm Gold Resets");
 	settings.Add("levelReset", false, "IL Resets");
 
@@ -71,10 +72,14 @@ init
 	vars.delayTimerTimestamp = 0;
 	vars.lastCutscene = "";
 	vars.lastCutsceneOld = "";
+	vars.checkpointCount = 0;
+	vars.timePassed = 0; // Debug value, will remove in the future.
+	vars.avgTimePassed = new List<int>() { }; // Debug value, will remove in the future.
 }
 
 isLoading
 {
+	// Delay timer countdown
 	var timePassed = Environment.TickCount - vars.delayTimerTimestamp;
 	vars.delayTimerTimestamp = Environment.TickCount;
 	if (vars.delayTimer > 0)
@@ -87,6 +92,8 @@ isLoading
 		}
 		if (current.skippable <= 0 && old.skippable >= 1)
         {
+			vars.timePassed = 5000 - vars.delayTimer;
+			vars.avgTimePassed.Add(vars.timePassed);
 			vars.delayTimer = 0;
         }
 		else
@@ -96,9 +103,24 @@ isLoading
 		}
 	}
 
-	if ((current.skippable >= 1 && old.skippable <= 0) || (vars.lastCutsceneOld != vars.lastCutscene && current.skippable >= 1)) 
+	// Exception clause, for any cutscenes that pause timer but shouldn't, or are otherwise problematic.
+	vars.exception = new List<string>() 
+    {
+		"CS_Tree_WaspQueenBoss_Arena_Defeated"
+	};
+
+	// Checks if skippable
+    if ((current.skippable >= 1 && old.skippable <= 0) || (vars.lastCutsceneOld != vars.lastCutscene && current.skippable >= 1)) 
 	{ 
-		vars.delayTimer = 5000; // How long to delay loads during skippable cutscenes
+		if (vars.exception.Contains(vars.lastCutscene))
+        {
+			vars.delayTimer = 0;
+		}
+		else
+        {
+			vars.delayTimer = 5000; // How long to delay loads during skippable cutscenes
+			vars.timePassed = 5000;
+		}
 	} 
 
 	if (current.isLoading)
@@ -116,7 +138,20 @@ update
 	if (current.cutsceneString == null) vars.lastCutscene = "null";
 	if (current.cutsceneString != null && current.cutsceneString.Length > 1) vars.lastCutscene = current.cutsceneString;
 
-	if (settings["debugTextComponents"])
+	if (settings["cpCount"])
+    {
+		if (current.checkPointString != old.checkPointString)
+        {
+			vars.checkpointCount++;
+		}
+		vars.SetTextComponent("CP Counter: ", vars.checkpointCount.ToString());
+	}
+
+	int[] array = vars.avgTimePassed.ToArray();
+	int sum = array.Sum();
+    double average = array.Length > 0 ? sum / array.Length : double.NaN;
+
+    if (settings["debugTextComponents"])
 	{
 		vars.SetTextComponent("--------------DEBUG--------------", "");
 		vars.SetTextComponent("Level:", current.levelString);
@@ -125,6 +160,8 @@ update
 		vars.SetTextComponent("Cutscene:", vars.lastCutscene);
 		vars.SetTextComponent("Skippable:", current.skippable.ToString());
 		vars.SetTextComponent("CS Timer:", vars.delayTimer.ToString());
+		vars.SetTextComponent("Time Passed:", vars.timePassed.ToString()); // Debug value, will remove in the future.
+		vars.SetTextComponent("Avg Time Passed:", average.ToString()); // Debug value, will remove in the future.
 	}
 }
 
@@ -325,6 +362,8 @@ reset
 start
 {
 	current.cutsceneCount = 0; // Reset cutscene counter
+	vars.checkpointCount = 0;
+	vars.avgTimePassed.Clear();
 
 	vars.startLevels = new List<string>()
 	{
