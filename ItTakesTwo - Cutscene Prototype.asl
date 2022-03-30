@@ -59,8 +59,184 @@ startup
 
 	// Optional Splits
 	settings.Add("optionalSplits", false, "Optional Splits");
+		settings.CurrentDefaultParent = "optionalSplits";
+		settings.Add("shed", false, "The Shed");
+		settings.Add("tree", false, "The Tree");
+		settings.Add("rose", false, "Rose's Room");
+		settings.Add("clock", false, "Cuckoo Clock");
+		settings.Add("snow", false, "Snow Globe");
+		settings.Add("garden", false, "Garden");
+		settings.Add("attic", false, "The Attic");
+
+			settings.CurrentDefaultParent = "shed";
+			settings.Add("biting", false, "Biting the Dust");
+			settings.Add("depths", false, "The Depths");
+			settings.Add("wired", false, "Wired Up");
+
+				settings.CurrentDefaultParent = "biting";
+				settings.Add("vacuumBattle", false, "Vacuum Battle Cutscene");
+
+				settings.CurrentDefaultParent = "depths";
+				settings.Add("preBossDoubleInteract", false, "Pre Boss Double Interact");
+
+				settings.CurrentDefaultParent = "wired";
+
+			settings.CurrentDefaultParent = "tree";
+			settings.Add("fresh", false, "Fresh Air");
+			settings.Add("captured", false, "Captured");
+			settings.Add("rooted", false, "Deeply Rooted");
+			settings.Add("extermination", false, "Extermination");
+			settings.Add("getaway", false, "Getaway");
+
+				settings.CurrentDefaultParent = "fresh";
+
+				settings.CurrentDefaultParent = "captured";
+				settings.Add("tug", false, "Tug of War");
+
+				settings.CurrentDefaultParent = "rooted";
+				settings.Add("boatStart", false, "Boat Start");
+				settings.Add("boatSwarm", false, "Boat Swarm CP");
+				settings.Add("darkroomStart", false, "Darkroom Start");
+				settings.Add("secondLantern", false, "Second Lantern");
+				settings.Add("thirdLantern", false, "Third Lantern");
+				settings.Add("beetleElevator", false, "Beetle Elevator");
+				settings.Add("beetleArena", false, "Beetle Arena");
+
+				settings.CurrentDefaultParent = "extermination";
+				settings.Add("planeIntro", false, "Plane Intro");
+				settings.Add("smashWood", false, "Smash In Wood");
+
+				settings.CurrentDefaultParent = "getaway";
+				settings.Add("gliderHalfway", false, "Glider halfway through");
+
+			settings.CurrentDefaultParent = "rose";
+			settings.Add("pillow", false, "Pillow Fort");
+			settings.Add("spaced", false, "Spaced Out");
+			settings.Add("hopscotch", false, "Hopscotch");
+			settings.Add("train", false, "Train Station");
+			settings.Add("dino", false, "Dino Land");
+			settings.Add("pirates", false, "Pirates Ahoy");
+			settings.Add("circus", false, "The Greatest Show");
+			settings.Add("castle", false, "Once Upon a Time");
+			settings.Add("dungeon", false, "Dungeon Crawler");
+			settings.Add("queen", false, "The Queen");
+
+				settings.CurrentDefaultParent = "pillow";
+
+				settings.CurrentDefaultParent = "spaced";
+				settings.Add("firstPlatform", false, "First Portal Platform");
+				settings.Add("eject", false, "UFO Eject Button");
+
+				settings.CurrentDefaultParent = "hopscotch";
+				settings.Add("grind", false, "Grind Section CP");
+				settings.Add("void", false, "Void World");
+				settings.Add("kaleidoscope", false, "Kaleidoscope");
+
+				settings.CurrentDefaultParent = "train";
+
+				settings.CurrentDefaultParent = "dino";
+				settings.Add("pteranodon", false, "Pteranodon Crash");
+
+				settings.CurrentDefaultParent = "pirates";
+				settings.Add("ships", false, "Ships Intro");
+				settings.Add("pirateBoss", false, "Boss Intro");
+
+				settings.CurrentDefaultParent = "circus";
+				settings.Add("trapeeze", false, "Trapeeze");
+
+				settings.CurrentDefaultParent = "castle";
+				settings.Add("crane", false, "Crane Puzzle");
+
+				settings.CurrentDefaultParent = "dungeon";
+				settings.Add("crusherIntro", false, "Crusher Intro");
+				settings.Add("chess", false, "Chess Intro");
+
+				settings.CurrentDefaultParent = "queen";
+
+			settings.CurrentDefaultParent = "clock";
+			settings.Add("gates", false, "Gates of Time");
+			settings.Add("clockworks", false, "Clockworks");
+			settings.Add("blast", false, "A Blast from the Past");
+
+				settings.CurrentDefaultParent = "gates";
+				settings.Add("clocktown", false, "Clocktown Intro");
+				settings.Add("hellTower", false, "Hell Tower");
+				settings.Add("birdIntro", false, "Bird Intro");
+				settings.Add("rightTowerDestroyed", false, "Right Tower Destroyed");
+
+				settings.CurrentDefaultParent = "clockworks";
+				settings.Add("statue", false, "Statue Room");
+				settings.Add("wallJump", false, "Wall Jump Corridor");
+				settings.Add("pocketWatch", false, "Pocket Watch Room");
+
+				settings.CurrentDefaultParent = "blast";
+				settings.Add("afterRewindSmash", false, "After Rewind Smash");
+
+			settings.CurrentDefaultParent = "snow";
+			settings.Add("warming", false, "Warming Up");
+			settings.Add("village", false, "Winter Village");
+			settings.Add("bti", false, "Beneath the Ice");
+			settings.Add("slopes", false, "Slippery Slopes");
+
+				settings.CurrentDefaultParent = "warming";
+
+				settings.CurrentDefaultParent = "village";
+
+				settings.CurrentDefaultParent = "bti";
+				settings.Add("iceCave", false, "Ice Cave Finish");
+
+				settings.CurrentDefaultParent = "slopes";
+				settings.Add("collapse", false, "Collapse RCP");
+				settings.Add("playerAttraction", false, "Player Attraction RCP");
+
+			settings.CurrentDefaultParent = "garden";
+			settings.Add("fingers", false, "Green Fingers");
+			settings.Add("weed", false, "Weed Whacking");
+			settings.Add("trespassing", false, "Trespassing");
+			settings.Add("frog", false, "Frog Pond");
+			settings.Add("affliction", false, "Affliction");
+
+				settings.CurrentDefaultParent = "fingers";
+				settings.Add("cactus", false, "Cactus Combat Area");
+				settings.Add("beanstalk", false, "Beanstalk Section");
+				settings.Add("burrown", false, "Burrown Enemy");
+				settings.Add("window", false, "Greenhouse Window");
+
+				settings.CurrentDefaultParent = "weed";
+				settings.Add("finalCombat", false, "Starting Final Combat RCP");
+				settings.Add("cactusWaves", false, "Cactus Waves Intro");
+
+				settings.CurrentDefaultParent = "trespassing";
+				settings.Add("gnome", false, "Gnome CP");
+
+				settings.CurrentDefaultParent = "frog";
+				settings.Add("snail", false, "Snail Race");
+
+				settings.CurrentDefaultParent = "affliction";
+				settings.Add("joyIntro", false, "Joy Intro");
+
+			settings.CurrentDefaultParent = "attic";
+			settings.Add("stage", false, "Setting the Stage");
+			settings.Add("rehearsal", false, "Rehearsal");
+			settings.Add("symphony", false, "Symphony");
+			settings.Add("turnUp", false, "Turn Up");
+			settings.Add("finale", false, "A Grand Finale");
+
+				settings.CurrentDefaultParent = "stage";
+				settings.Add("trackRunner", false, "Track Runner");
+
+				settings.CurrentDefaultParent = "rehearsal";
+
+				settings.CurrentDefaultParent = "symphony";
+
+				settings.CurrentDefaultParent = "turnUp";
+				settings.Add("djElevator", false, "DJ Elevator");
+				settings.Add("audioSurf", false, "Audio Surf");
+
+				settings.CurrentDefaultParent = "finale";
 
 	// DEBUG
+	settings.CurrentDefaultParent = null;
 	settings.Add("debugTextComponents", false, "[DEBUG] Show tracked values in layout");
 
 }
@@ -90,10 +266,13 @@ isLoading
 			vars.delayTimer = 0;
 			return true;
 		}
-		if (current.skippable <= 0 && old.skippable >= 1)
+		if ((current.skippable <= 0 && old.skippable >= 1) || (vars.lastCutsceneOld != vars.lastCutscene && current.skippable >= 1))
         {
-			vars.timePassed = 5000 - vars.delayTimer;
-			vars.avgTimePassed.Add(vars.timePassed);
+            vars.timePassed = 4000 - vars.delayTimer;
+			if (vars.timePassed != 4000 && vars.timePassed != 0)
+            {
+				vars.avgTimePassed.Add(vars.timePassed);
+			}
 			vars.delayTimer = 0;
         }
 		else
@@ -106,11 +285,16 @@ isLoading
 	// Exception clause, for any cutscenes that pause timer but shouldn't, or are otherwise problematic.
 	vars.exception = new List<string>() 
     {
-		"CS_Tree_WaspQueenBoss_Arena_Defeated"
+		"CS_Tree_WaspQueenBoss_Arena_Defeated",
+		"CS_Tree_Escape_Chase_Outro",
+		"CS_Tree_Escape_Plane_Combat", // Only skippable by Cody, capability blocked for May
+		//"CS_Tree_Escape_NoseDive_Intro", // Extremely short skippable window
+		"CS_PlayRoom_Bookshelf_Elephant_Outro",
+		"CS_Garden_Shrubbery_Shrubbery_Intro"
 	};
 
 	// Checks if skippable
-    if ((current.skippable >= 1 && old.skippable <= 0) || (vars.lastCutsceneOld != vars.lastCutscene && current.skippable >= 1)) 
+    if ((current.skippable >= 1 && old.skippable <= 0) || (vars.lastCutsceneOld != vars.lastCutscene && current.skippable >= 1))
 	{ 
 		if (vars.exception.Contains(vars.lastCutscene))
         {
@@ -118,8 +302,8 @@ isLoading
 		}
 		else
         {
-			vars.delayTimer = 5000; // How long to delay loads during skippable cutscenes
-			vars.timePassed = 5000;
+			vars.delayTimer = 4000; // How long to delay loads during skippable cutscenes
+			vars.timePassed = 4000;
 		}
 	} 
 
