@@ -56,6 +56,12 @@ startup
 	});
 
 	// Optional Settings
+	settings.Add("defaultSplits", true, "Default Splits");
+	settings.Add("intermediaries", true, "Intermediaries");
+	//settings.Add("ending", true, "Split on kiss (end of run)");
+
+	settings.Add("optionalSettings", false, "Optional Settings");
+	settings.CurrentDefaultParent = "optionalSettings";
 	settings.Add("cpCount", false, "Checkpoint Counter");
 	settings.SetToolTip("cpCount", "Toggles a checkpoint counter in your overlay. Useful for 100%.");
 	settings.Add("commGold", false, "Comm Gold Resets");
@@ -68,213 +74,223 @@ startup
         "and resumes time either when the 4 seconds run out or the cutscene is skipped. \n" +
         "This should make IGT more fair, no matter who you play with across the world.");
 
-	settings.Add("intermediaries", false, "Intermediaries (Deprecated)");
+
 
 	// Optional Splits
+	settings.CurrentDefaultParent = null;
 	settings.Add("optionalSplits", false, "Optional Splits");
-		settings.CurrentDefaultParent = "optionalSplits";
-		settings.Add("shed", false, "The Shed");
-		settings.Add("tree", false, "The Tree");
-		settings.Add("rose", false, "Rose's Room");
-		settings.Add("clock", false, "Cuckoo Clock");
-		settings.Add("snow", false, "Snow Globe");
-		settings.Add("garden", false, "Garden");
-		settings.Add("attic", false, "The Attic");
 
-			settings.CurrentDefaultParent = "shed";
-			settings.Add("biting", false, "Biting the Dust");
-			settings.Add("depths", false, "The Depths");
-			settings.Add("wired", false, "Wired Up");
+	settings.CurrentDefaultParent = "optionalSplits";
+	settings.Add("shed", false, "The Shed");
+	settings.Add("tree", false, "The Tree");
+	settings.Add("rose", false, "Rose's Room");
+	settings.Add("clock", false, "Cuckoo Clock");
+	settings.Add("snow", false, "Snow Globe");
+	settings.Add("garden", false, "Garden");
+	settings.Add("attic", false, "The Attic");
 
-				settings.CurrentDefaultParent = "biting";
-				settings.Add("sidescrollerCP", false, "Side Scroller RCP");
-				settings.Add("vacuumBattle", false, "Vacuum Battle Cutscene");
+	settings.CurrentDefaultParent = "shed";
+	settings.Add("biting", false, "Biting the Dust");
+	settings.Add("depths", false, "The Depths");
+	settings.Add("wired", false, "Wired Up");
 
-				settings.CurrentDefaultParent = "depths";
-				settings.Add("minigameIntro", false, "Minigame Intro Cutscene");
-				settings.Add("preBossDoubleInteract", false, "Pre Boss Double Interact CP");
-				settings.Add("toolbossIntro", false, "Toolboss Intro Cutscene");
-				settings.Add("toolbossBattle", false, "Toolbox boss Battle Cutscene");
+	settings.CurrentDefaultParent = "biting";
+	settings.Add("sidescrollerCP", false, "Side Scroller RCP");
+	settings.Add("vacuumBattle", false, "Vacuum Battle Cutscene");
 
-				settings.CurrentDefaultParent = "wired";
+	settings.CurrentDefaultParent = "depths";
+	settings.Add("minigameIntro", false, "Minigame Intro Cutscene");
+	settings.Add("preBossDoubleInteract", false, "Pre Boss Double Interact CP");
+	settings.Add("toolbossIntro", false, "Toolboss Intro Cutscene");
+	settings.Add("toolbossBattle", false, "Toolbox boss Battle Cutscene");
 
-			settings.CurrentDefaultParent = "tree";
-			settings.Add("fresh", false, "Fresh Air");
-			settings.Add("captured", false, "Captured");
-			settings.Add("rooted", false, "Deeply Rooted");
-			settings.Add("extermination", false, "Extermination");
-			settings.Add("getaway", false, "Getaway");
+	settings.CurrentDefaultParent = "wired";
 
-				settings.CurrentDefaultParent = "fresh";
+	settings.CurrentDefaultParent = "tree";
+	settings.Add("fresh", false, "Fresh Air");
+	settings.Add("captured", false, "Captured");
+	settings.Add("rooted", false, "Deeply Rooted");
+	settings.Add("extermination", false, "Extermination");
+	settings.Add("getaway", false, "Getaway");
 
-				settings.CurrentDefaultParent = "captured";
-				settings.Add("tug", false, "Tug of War");
+	settings.CurrentDefaultParent = "fresh";
 
-				settings.CurrentDefaultParent = "rooted";
-				settings.Add("boatStart", false, "Boat Start");
-				settings.Add("boatSwarm", false, "Boat Swarm CP");
-				settings.Add("darkroomStart", false, "Darkroom Start");
-				settings.Add("secondLantern", false, "Second Lantern");
-				settings.Add("thirdLantern", false, "Third Lantern");
-				settings.Add("beetleElevator", false, "Beetle Elevator");
-				settings.Add("beetleArena", false, "Beetle Arena");
+	settings.CurrentDefaultParent = "captured";
+	settings.Add("tug", false, "Tug of War");
 
-				settings.CurrentDefaultParent = "extermination";
-				settings.Add("planeIntro", false, "Plane Intro");
-				settings.Add("smashWood", false, "Smash In Wood");
+	settings.CurrentDefaultParent = "rooted";
+	settings.Add("boatStart", false, "Boat Start");
+	settings.Add("boatSwarm", false, "Boat Swarm CP");
+	settings.Add("darkroomStart", false, "Darkroom Start");
+	settings.Add("secondLantern", false, "Second Lantern");
+	settings.Add("thirdLantern", false, "Third Lantern");
+	settings.Add("beetleElevator", false, "Beetle Elevator");
+	settings.Add("beetleArena", false, "Beetle Arena");
 
-				settings.CurrentDefaultParent = "getaway";
-				settings.Add("gliderHalfway", false, "Glider halfway through");
+	settings.CurrentDefaultParent = "extermination";
+	settings.Add("planeIntro", false, "Plane Intro");
+	settings.Add("smashWood", false, "Smash In Wood");
 
-			settings.CurrentDefaultParent = "rose";
-			settings.Add("pillow", false, "Pillow Fort");
-			settings.Add("spaced", false, "Spaced Out");
-			settings.Add("hopscotch", false, "Hopscotch");
-			settings.Add("train", false, "Train Station");
-			settings.Add("dino", false, "Dino Land");
-			settings.Add("pirates", false, "Pirates Ahoy");
-			settings.Add("circus", false, "The Greatest Show");
-			settings.Add("castle", false, "Once Upon a Time");
-			settings.Add("dungeon", false, "Dungeon Crawler");
-			settings.Add("queen", false, "The Queen");
+	settings.CurrentDefaultParent = "getaway";
+	settings.Add("gliderHalfway", false, "Glider halfway through");
 
-				settings.CurrentDefaultParent = "pillow";
-				settings.Add("pillowDolls", false, "Doll Room Cutscene");
-				settings.Add("pillowFinal", false, "Final Room");
+	settings.CurrentDefaultParent = "rose";
+	settings.Add("pillow", false, "Pillow Fort");
+	settings.Add("spaced", false, "Spaced Out");
+	settings.Add("hopscotch", false, "Hopscotch");
+	settings.Add("train", false, "Train Station");
+	settings.Add("dino", false, "Dino Land");
+	settings.Add("pirates", false, "Pirates Ahoy");
+	settings.Add("circus", false, "The Greatest Show");
+	settings.Add("castle", false, "Once Upon a Time");
+	settings.Add("dungeon", false, "Dungeon Crawler");
+	settings.Add("queen", false, "The Queen");
 
-				settings.CurrentDefaultParent = "spaced";
-				settings.Add("firstPlatform", false, "First Portal Platform");
-				settings.Add("greenPortal", false, "Green Portal Ending");
-				settings.Add("redPortal", false, "Red Portal Ending");
-				settings.Add("purplePortal", false, "Purple Portal Ending");
-				settings.Add("umbrellaPortal", false, "Umbrella Portal Ending");
-				settings.Add("pillowPortal", false, "Pillow Portal Ending");
-				settings.Add("cubePortal", false, "Cube Portal Ending");
-				settings.Add("laserPointer", false, "Laser Pointer CP");
-				settings.Add("rocketPhase", false, "Rocket Phase CP");
-				settings.Add("insideUFO", false, "UFO Start");
-				settings.Add("eject", false, "UFO Eject Button");
+	settings.CurrentDefaultParent = "pillow";
+	settings.Add("pillowDolls", false, "Doll Room Cutscene");
+	settings.Add("pillowFinal", false, "Final Room");
 
-				settings.CurrentDefaultParent = "hopscotch";
-				settings.Add("grind", false, "Grind Section CP");
-				settings.Add("closet", false, "Closet CP");
-				settings.Add("homework", false, "Homework Section");
-				settings.Add("marble", false, "Marble Maze Room");
-				settings.Add("hopDungeon", false, "Hopscotch Dungeon CP");
-				settings.Add("fidget", false, "Fidget Spinners CP");
-				settings.Add("void", false, "Void World");
-				settings.Add("kaleidoscope", false, "Kaleidoscope");
+	settings.CurrentDefaultParent = "spaced";
+	settings.Add("firstPlatform", false, "First Portal Platform");
+	settings.Add("greenPortal", false, "Green Portal Ending");
+	settings.Add("redPortal", false, "Red Portal Ending");
+	settings.Add("purplePortal", false, "Purple Portal Ending");
+	settings.Add("umbrellaPortal", false, "Umbrella Portal Ending");
+	settings.Add("pillowPortal", false, "Pillow Portal Ending");
+	settings.Add("cubePortal", false, "Cube Portal Ending");
+	settings.Add("laserPointer", false, "Laser Pointer CP");
+	settings.Add("rocketPhase", false, "Rocket Phase CP");
+	settings.Add("insideUFO", false, "UFO Start");
+	settings.Add("eject", false, "UFO Eject Button");
 
-				settings.CurrentDefaultParent = "train";
+	settings.CurrentDefaultParent = "hopscotch";
+	settings.Add("grind", false, "Grind Section CP");
+	settings.Add("closet", false, "Closet CP");
+	settings.Add("homework", false, "Homework Section");
+	settings.Add("marble", false, "Marble Maze Room");
+	settings.Add("hopDungeon", false, "Hopscotch Dungeon CP");
+	settings.Add("fidget", false, "Fidget Spinners CP");
+	settings.Add("void", false, "Void World");
+	settings.Add("kaleidoscope", false, "Kaleidoscope");
 
-				settings.CurrentDefaultParent = "dino";
-				settings.Add("pteranodon", false, "Pteranodon Crash");
+	settings.CurrentDefaultParent = "train";
 
-				settings.CurrentDefaultParent = "pirates";
-				settings.Add("corridor", false, "Corridor CP");
-				settings.Add("ships", false, "Ships Intro");
-				settings.Add("stream", false, "Stream CP");
-				settings.Add("pirateBoss", false, "Boss Intro");
+	settings.CurrentDefaultParent = "dino";
+	settings.Add("pteranodon", false, "Pteranodon Crash");
 
-				settings.CurrentDefaultParent = "circus";
-				settings.Add("carousel", false, "Carousel CP");
-				settings.Add("trapeeze", false, "Trapeeze CP");
+	settings.CurrentDefaultParent = "pirates";
+	settings.Add("corridor", false, "Corridor CP");
+	settings.Add("ships", false, "Ships Intro");
+	settings.Add("stream", false, "Stream CP");
+	settings.Add("pirateBoss", false, "Boss Intro");
 
-				settings.CurrentDefaultParent = "castle";
-				settings.Add("crane", false, "Crane Puzzle");
+	settings.CurrentDefaultParent = "circus";
+	settings.Add("carousel", false, "Carousel CP");
+	settings.Add("trapeeze", false, "Trapeeze CP");
 
-				settings.CurrentDefaultParent = "dungeon";
-				settings.Add("postDrawbridge", false, "Post Drawbridge");
-				settings.Add("postTeleporter", false, "Teleporter Boss Defeated");
-				settings.Add("crusherIntro", false, "Crusher Intro");
-				settings.Add("chess", false, "Chess Intro");
+	settings.CurrentDefaultParent = "castle";
+	settings.Add("crane", false, "Crane Puzzle");
 
-				settings.CurrentDefaultParent = "queen";
+	settings.CurrentDefaultParent = "dungeon";
+	settings.Add("postDrawbridge", false, "Post Drawbridge");
+	settings.Add("postTeleporter", false, "Teleporter Boss Defeated");
+	settings.Add("crusherIntro", false, "Crusher Intro");
+	settings.Add("chess", false, "Chess Intro");
 
-			settings.CurrentDefaultParent = "clock";
-			settings.Add("gates", false, "Gates of Time");
-			settings.Add("clockworks", false, "Clockworks");
-			settings.Add("blast", false, "A Blast from the Past");
+	settings.CurrentDefaultParent = "queen";
 
-				settings.CurrentDefaultParent = "gates";
-				settings.Add("clocktown", false, "Clocktown Intro");
-				settings.Add("hellTower", false, "Hell Tower");
-				settings.Add("birdIntro", false, "Bird Intro");
-				settings.Add("rightTowerDestroyed", false, "Right Tower Destroyed");
+	settings.CurrentDefaultParent = "clock";
+	settings.Add("gates", false, "Gates of Time");
+	settings.Add("clockworks", false, "Clockworks");
+	settings.Add("blast", false, "A Blast from the Past");
 
-				settings.CurrentDefaultParent = "clockworks";
-				settings.Add("statue", false, "Statue Room");
-				settings.Add("wallJump", false, "Wall Jump Corridor");
-				settings.Add("pocketWatch", false, "Pocket Watch Room");
+	settings.CurrentDefaultParent = "gates";
+	settings.Add("clocktown", false, "Clocktown Intro");
+	settings.Add("hellTower", false, "Hell Tower");
+	settings.Add("birdIntro", false, "Bird Intro");
+	settings.Add("rightTowerDestroyed", false, "Right Tower Destroyed");
 
-				settings.CurrentDefaultParent = "blast";
-				settings.Add("afterRewindSmash", false, "After Rewind Smash");
+	settings.CurrentDefaultParent = "clockworks";
+	settings.Add("statue", false, "Statue Room");
+	settings.Add("wallJump", false, "Wall Jump Corridor");
+	settings.Add("pocketWatch", false, "Pocket Watch Room");
 
-			settings.CurrentDefaultParent = "snow";
-			settings.Add("warming", false, "Warming Up");
-			settings.Add("village", false, "Winter Village");
-			settings.Add("bti", false, "Beneath the Ice");
-			settings.Add("slopes", false, "Slippery Slopes");
+	settings.CurrentDefaultParent = "blast";
+	settings.Add("afterRewindSmash", false, "After Rewind Smash");
 
-				settings.CurrentDefaultParent = "warming";
+	settings.CurrentDefaultParent = "snow";
+	settings.Add("warming", false, "Warming Up");
+	settings.Add("village", false, "Winter Village");
+	settings.Add("bti", false, "Beneath the Ice");
+	settings.Add("slopes", false, "Slippery Slopes");
 
-				settings.CurrentDefaultParent = "village";
+	settings.CurrentDefaultParent = "warming";
 
-				settings.CurrentDefaultParent = "bti";
-				settings.Add("iceCave", false, "Ice Cave Finish");
-				settings.Add("fish", false, "Fish RCP");
+	settings.CurrentDefaultParent = "village";
 
-				settings.CurrentDefaultParent = "slopes";
-				settings.Add("collapse", false, "Collapse RCP");
-				settings.Add("playerAttraction", false, "Player Attraction RCP");
+	settings.CurrentDefaultParent = "bti";
+	settings.Add("iceCave", false, "Ice Cave Finish (Doesn't work atm)");
+	settings.Add("fish", false, "Fish RCP (Doesn't work atm)");
 
-			settings.CurrentDefaultParent = "garden";
-			settings.Add("fingers", false, "Green Fingers");
-			settings.Add("weed", false, "Weed Whacking");
-			settings.Add("trespassing", false, "Trespassing");
-			settings.Add("frog", false, "Frog Pond");
-			settings.Add("affliction", false, "Affliction");
+	settings.CurrentDefaultParent = "slopes";
+	settings.Add("collapse", false, "Collapse RCP");
+	settings.Add("playerAttraction", false, "Player Attraction RCP");
 
-				settings.CurrentDefaultParent = "fingers";
-				settings.Add("cactus", false, "Cactus Combat Area");
-				settings.Add("beanstalk", false, "Beanstalk Section");
-				settings.Add("burrown", false, "Burrown Enemy");
-				settings.Add("window", false, "Greenhouse Window");
+	settings.CurrentDefaultParent = "garden";
+	settings.Add("fingers", false, "Green Fingers");
+	settings.Add("weed", false, "Weed Whacking");
+	settings.Add("trespassing", false, "Trespassing");
+	settings.Add("frog", false, "Frog Pond");
+	settings.Add("affliction", false, "Affliction");
 
-				settings.CurrentDefaultParent = "weed";
-				settings.Add("finalCombat", false, "Starting Final Combat RCP");
-				settings.Add("cactusWaves", false, "Cactus Waves Intro");
+	settings.CurrentDefaultParent = "fingers";
+	settings.Add("cactus", false, "Cactus Combat Area");
+	settings.Add("beanstalk", false, "Beanstalk Section");
+	settings.Add("burrown", false, "Burrown Enemy");
+	settings.Add("window", false, "Greenhouse Window");
 
-				settings.CurrentDefaultParent = "trespassing";
-				settings.Add("gnome", false, "Gnome CP");
+	settings.CurrentDefaultParent = "weed";
+	settings.Add("spiderFight", false, "First combat area cutscene");
+	settings.Add("secondSpider", false, "Second Spider");
+	settings.Add("sinkingLog", false, "Sinking Log");
+	settings.Add("finalCombat", false, "Starting Final Combat RCP");
+	settings.Add("cactusWaves", false, "Cactus Waves Intro");
 
-				settings.CurrentDefaultParent = "frog";
-				settings.Add("snail", false, "Snail Race");
+	settings.CurrentDefaultParent = "trespassing";
+	settings.Add("stealthStart", false, "Stealth Start CP");
+	settings.Add("moleChase", false, "Mole Chase start");
+	settings.Add("mole2D", false, "Mole 2D start");
+	settings.Add("gnome", false, "Gnome CP");
 
-				settings.CurrentDefaultParent = "affliction";
-				settings.Add("joyIntro", false, "Joy Intro");
-				settings.Add("joyPhase2", false, "Joy Phase 2");
-				settings.Add("joyPhase3", false, "Joy Phase 3");
+	settings.CurrentDefaultParent = "frog";
+	settings.Add("topFountainBulb", false, "Top Fountain Bulb CS");
+	settings.Add("snail", false, "Snail Race");
 
-			settings.CurrentDefaultParent = "attic";
-			settings.Add("stage", false, "Setting the Stage");
-			settings.Add("rehearsal", false, "Rehearsal");
-			settings.Add("symphony", false, "Symphony");
-			settings.Add("turnUp", false, "Turn Up");
-			settings.Add("finale", false, "A Grand Finale");
+	settings.CurrentDefaultParent = "affliction";
+	settings.Add("firstBulb", false, "First Bulb Exploded");
+	settings.Add("joyIntro", false, "Joy Intro");
+	settings.Add("joyPhase2", false, "Joy Phase 2");
+	settings.Add("joyPhase3", false, "Joy Phase 3");
 
-				settings.CurrentDefaultParent = "stage";
-				settings.Add("trackRunner", false, "Track Runner");
+	settings.CurrentDefaultParent = "attic";
+	settings.Add("stage", false, "Setting the Stage");
+	settings.Add("rehearsal", false, "Rehearsal");
+	settings.Add("symphony", false, "Symphony");
+	settings.Add("turnUp", false, "Turn Up");
+	settings.Add("finale", false, "A Grand Finale");
 
-				settings.CurrentDefaultParent = "rehearsal";
+	settings.CurrentDefaultParent = "stage";
+	settings.Add("trackRunner", false, "Track Runner");
 
-				settings.CurrentDefaultParent = "symphony";
+	settings.CurrentDefaultParent = "rehearsal";
 
-				settings.CurrentDefaultParent = "turnUp";
-				settings.Add("djElevator", false, "DJ Elevator");
-				settings.Add("audioSurf", false, "Audio Surf");
+	settings.CurrentDefaultParent = "symphony";
 
-				settings.CurrentDefaultParent = "finale";
+	settings.CurrentDefaultParent = "turnUp";
+	settings.Add("djElevator", false, "DJ Elevator");
+	settings.Add("audioSurf", false, "Audio Surf");
+
+	settings.CurrentDefaultParent = "finale";
 
 	// DEBUG
 	settings.CurrentDefaultParent = null;
@@ -409,205 +425,6 @@ update
 	}
 }
 
-reset
-{
-	// Reset in Wake-up Call
-	if ((current.checkPointString == "Awakening_Start" && old.checkPointString != "Awakening_Start") || 
-		(current.checkPointString == "Awakening_Start" && current.isLoading && !old.isLoading))
-		return true;
-
-	if (settings["levelReset"])
-	{
-		if (current.checkPointString == "Gate" && old.checkPointString == "Gate")
-			current.snowGlobeGate = 1;
-
-		if (current.checkPointString == "Tree_Approach_LevelIntro" && old.checkPointString != "Tree_Approach_LevelIntro" && 
-			old.checkPointString != "Stargazing_Meet" && old.checkPointString != "Main Menu")
-			return true;
-
-		if (current.checkPointString == "PillowFort" && old.checkPointString != "PillowFort" && 
-			old.checkPointString != "RealWorld_Exterior_Roof_Crash" && old.checkPointString != "Main Menu")
-			return true;
-
-		if (current.checkPointString == "ClockworkIntro" && old.checkPointString != "ClockworkIntro" && 
-			old.checkPointString != "TherapyRoom_Time_Session" && old.checkPointString != "Main Menu")
-			return true;
-
-		if (current.checkPointString == "Forest Entry" && old.checkPointString != "Forest Entry" && 
-			old.checkPointString != "TherapyRoom_Attraction_Session" && current.snowGlobeGate == 1 && old.checkPointString != "Main Menu")
-		{
-			current.snowGlobeGate = 0;
-			return true;
-		}
-
-		if (current.checkPointString == "Intro" && old.checkPointString != "Intro" && old.checkPointString != "TherapyRoom_Garden_Session" && 
-			current.levelString.ToString() == "/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP" && old.checkPointString != "Main Menu")
-			return true;
-
-		if (current.checkPointString == "ConcertHall_Backstage" && old.checkPointString != "ConcertHall_Backstage" && old.checkPointString != "TherapyRoom_Music" && 
-			old.checkPointString != "Main Menu" || (current.checkPointString == "ConcertHall_Backstage" && current.isLoading && !old.isLoading))
-			return true;
-	}
-
-	if (settings["commGold"])
-	{
-		// Reset the timer in Biting the Dust
-		if ((current.checkPointString == "VacuumIntro" && old.checkPointString != "VacuumIntro") || 
-			(current.checkPointString == "VacuumIntro" && current.isLoading && !old.isLoading))
-			return true;
-
-		// Reset the timer in The Depths
-		if ((current.checkPointString == "MineIntro" && old.checkPointString != "MineIntro") || 
-			(current.checkPointString == "MineIntro" && current.isLoading && !old.isLoading))
-			return true;
-
-		// Reset the timer in Wired Up
-		if ((current.checkPointString == "GrindSection_Start" && old.checkPointString != "GrindSection_Start") || 
-			(current.checkPointString == "GrindSection_Start" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Fresh Air
-		if ((current.checkPointString == "Tree_Approach_LevelIntro" && old.checkPointString != "Tree_Approach_LevelIntro") || 
-			(current.checkPointString == "Tree_Approach_LevelIntro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Captured + Deeply Rooted + Beneath the Ice
-		if ((current.checkPointString == "Entry" && old.checkPointString != "Entry") || 
-			(current.checkPointString == "Entry" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Extermination
-		if ((current.checkPointString == "StartWaspBossPhase1" && old.checkPointString != "StartWaspBossPhase1") || 
-			(current.checkPointString == "StartWaspBossPhase1" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Getaway + Hopscotch + Green Fingers + Frog Pond
-		if ((current.checkPointString == "Intro" && old.checkPointString != "Intro") || 
-			(current.checkPointString == "Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Pillow Fort
-		if ((current.checkPointString == "PillowFort" && old.checkPointString != "PillowFort") || 
-			(current.checkPointString == "PillowFort" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Spaced Out
-		if ((current.checkPointString == "SpaceStationIntro" && old.checkPointString != "SpaceStationIntro") || 
-			(current.checkPointString == "SpaceStationIntro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Train Station
-		if ((current.checkPointString == "Trainstation_Start" && old.checkPointString != "Trainstation_Start") || 
-			(current.checkPointString == "Trainstation_Start" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Dino Land
-		if ((current.checkPointString == "Dinoland_Start" && old.checkPointString != "Dinoland_Start") || 
-			(current.checkPointString == "Dinoland_Start" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Pirates Ahoy
-		if ((current.checkPointString == "Pirate_Part01_Start" && old.checkPointString != "Pirate_Part01_Start") || 
-			(current.checkPointString == "Pirate_Part01_Start" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in The Greatest Show
-		if ((current.checkPointString == "Circus_Start" && old.checkPointString != "Circus_Start") || 
-			(current.checkPointString == "Circus_Start" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Once Upon A Time
-		if ((current.checkPointString == "Castle_Courtyard_Start" && old.checkPointString != "Castle_Courtyard_Start") || 
-			(current.checkPointString == "Castle_Courtyard_Start" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Dungeon Crawler
-		if ((current.checkPointString == "Castle_Dungeon" && old.checkPointString != "Castle_Dungeon") || 
-			(current.checkPointString == "Castle_Dungeon" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in The Queen
-		if ((current.checkPointString == "Shelf_Cutie_Intro" && old.checkPointString != "Shelf_Cutie_Intro1") || 
-			(current.checkPointString == "Shelf_Cutie_Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Gates of Time
-		if ((current.checkPointString == "ClockworkIntro" && old.checkPointString != "ClockworkIntro") || 
-			(current.checkPointString == "ClockworkIntro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Clockworks
-		if ((current.checkPointString == "Crusher Trap Room" && old.checkPointString != "Crusher Trap Room1") || 
-			(current.checkPointString == "Crusher Trap Room" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in A Blast from the Past
-		if ((current.checkPointString == "Boss Intro" && old.checkPointString != "Boss Intro") || 
-			(current.checkPointString == "Boss Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Warming Up
-		if ((current.checkPointString == "Forest Entry" && old.checkPointString != "Forest Entry") || 
-			(current.checkPointString == "Forest Entry" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Winter Village
-		if ((current.checkPointString == "Town Entry" && old.checkPointString != "Town Entry") || 
-			(current.checkPointString == "Town Entry" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Wake-Up Call
-		if ((current.checkPointString == "0. Entry" && old.checkPointString != "0. Entry") || 
-			(current.checkPointString == "0. Entry" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Weed Whacking
-		if ((current.checkPointString == "Shrubbery_Enter" && old.checkPointString != "Shrubbery_Enter") || 
-			(current.checkPointString == "Shrubbery_Enter" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Trespassing
-		if ((current.checkPointString == "MoleTunnels_Level_Intro" && old.checkPointString != "MoleTunnels_Level_Intro") || 
-			(current.checkPointString == "MoleTunnels_Level_Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Affliction
-		if ((current.checkPointString == "Greenhouse_Intro" && old.checkPointString != "Greenhouse_Intro") || 
-			(current.checkPointString == "Greenhouse_Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Setting the Stage
-		if ((current.checkPointString == "ConcertHall_Backstage" && old.checkPointString != "ConcertHall_Backstage") || 
-			(current.checkPointString == "ConcertHall_Backstage" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Rehearsal
-		if ((current.checkPointString == "Tutorial_Intro" && old.checkPointString != "Tutorial_Intro") || 
-			(current.checkPointString == "Tutorial_Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Symphony
-		if ((current.checkPointString == "Classic_01_Attic_Intro" && old.checkPointString != "Classic_01_Attic_Intro") || 
-			(current.checkPointString == "Classic_01_Attic_Intro" && current.isLoading && !old.isLoading)) 
-			return true;
-
-		// Reset the timer in Turn Up
-		if ((current.checkPointString == "RainbowSlide" && old.checkPointString != "RainbowSlide") || 
-			(current.checkPointString == "RainbowSlide" && current.isLoading && !old.isLoading))
-			return true;
-
-		// Reset the timer in A Grand Finale
-		if ((current.checkPointString == "EndingIntro" && old.checkPointString != "EndingIntro") || 
-			(current.checkPointString == "EndingIntro" && current.isLoading && !old.isLoading)) 
-			return true;
-	}
-}
-
-onReset
-{
-	vars.checkpointCount = 0;
-}
-
 onStart
 {
 	current.cutsceneCount = 0; // Reset cutscene counter
@@ -638,21 +455,324 @@ onStart
 			vars.cpListCount = 24;
 
 		if (current.chapterString == "Garden")
-			vars.cpListCount = 56;
+			vars.cpListCount = 55;
 
 		if (current.chapterString == "Music")
 			vars.cpListCount = 45;
 	}
 	else
-    {
-		vars.cpListCount = 325;
+	{
+		vars.cpListCount = 324;
+	}
+
+	vars.cutsceneSplits.Clear();
+	vars.postCutsceneSplits.Clear();
+	vars.checkpointSplits.Clear();
+	vars.levelSplits.Clear();
+	vars.nextLoadSplits.Clear();
+
+	if (settings["defaultSplits"])
+	{
+		vars.cutsceneSplits.AddRange(vars.defaultSplitsCS);
+		vars.postCutsceneSplits.AddRange(vars.defaultSplitsPCS);
+		vars.checkpointSplits.Add("TerraceProposalCutscene");
+		vars.levelSplits.AddRange(vars.defaultSplits);
+	}
+
+	if (settings["intermediaries"])
+		vars.levelSplits.AddRange(vars.startLevels);
+
+	if (settings["optionalSplits"])
+	{
+		vars.optionalSplits.Clear();
+
+		// Shed
+		if (settings["sidescrollerCP"])
+			vars.nextLoadSplits.Add("Side Scroller");
+
+		if (settings["vacuumBattle"])
+			vars.cutsceneSplits.Add("CS_Shed_Awakening_Vacuum_Battle");
+
+		// Depths
+		if (settings["minigameIntro"])
+			vars.cutsceneSplits.Add("CS_Shed_Tambourine_MiniGame_Intro");
+
+		if (settings["preBossDoubleInteract"])
+			vars.nextLoadSplits.Add("Pre Boss Double Interact");
+
+		if (settings["toolbossIntro"])
+			vars.cutsceneSplits.Add("CS_Shed_Main_ToolBoss_Battle");
+
+		if (settings["toolbossBattle"])
+			vars.checkpointSplits.Add("MainBossFightStarted");
+
+		// Captured
+		if (settings["tug"])
+			vars.checkpointSplits.Add("MINIGAME_TugOfWar");
+
+		// Deeply Rooted
+		if (settings["boatStart"])
+			vars.levelSplits.Add("/Game/Maps/Tree/Boat/Tree_Boat_BP");
+
+		if (settings["boatSwarm"])
+			vars.checkpointSplits.Add("Boat Checkpoint Swarm");
+
+		if (settings["darkroomStart"])
+			vars.levelSplits.Add("/Game/Maps/Tree/Darkroom/Tree_Darkroom_BP");
+
+		if (settings["secondLantern"])
+			vars.checkpointSplits.Add("SecondLantern");
+
+		if (settings["thirdLantern"])
+			vars.checkpointSplits.Add("ThirdLantern");
+
+		if (settings["beetleElevator"])
+			vars.levelSplits.Add("/Game/Maps/Tree/WaspNest/WaspsNest_Elevator_BP");
+
+		if (settings["beetleArena"])
+			vars.cutsceneSplits.Add("CS_Tree_WaspNest_Arena_Intro");
+
+		// Extermination
+		if (settings["planeIntro"])
+			vars.cutsceneSplits.Add("CS_Tree_WaspQueenBoss_Arena_PlaneIntro");
+
+		if (settings["smashWood"])
+			vars.cutsceneSplits.Add("CS_Tree_WaspQueenBoss_Arena_SmashInWood");
+
+		// Getaway
+		if (settings["gliderHalfway"])
+			vars.checkpointSplits.Add("Glider halfway through");
+
+		// Pillow Fort
+		if (settings["pillowDolls"])
+			vars.cutsceneSplits.Add("CS_PlayRoom_PillowFort_Dolls_Dialogue");
+
+		if (settings["pillowFinal"])
+			vars.checkpointSplits.Add("PillowfortFinalRoom");
+
+		// Spaced Out
+		if (settings["firstPlatform"])
+			vars.checkpointSplits.Add("FirstPortalPlatform");
+
+		if (settings["greenPortal"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_SpaceStation_BalanceScales_ReturnToPortal");
+
+		if (settings["redPortal"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_SpaceStation_Planets_ReturnToPortal");
+
+		if (settings["purplePortal"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_SpaceStation_PlasmaBall_ReturnToPortal");
+
+		if (settings["umbrellaPortal"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_SpaceStation_SpaceBowl_ReturnToPortal");
+
+		if (settings["pillowPortal"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_SpaceStation_LaunchBoard_ReturnToPortal");
+
+		if (settings["cubePortal"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_SpaceStation_Electricity_ReturnToPortal");
+
+		if (settings["laserPointer"])
+			vars.checkpointSplits.Add("MoonBaboonLaserPointer");
+
+		if (settings["rocketPhase"])
+			vars.checkpointSplits.Add("MoonBaboonRocketPhase");
+
+		if (settings["insideUFO"])
+			vars.checkpointSplits.Add("MoonBaboonInsideUFO");
+
+		if (settings["eject"])
+			vars.cutsceneSplits.Add("CS_PlayRoom_SpaceStation_BossFight_Eject");
+
+		// Hopscotch
+		if (settings["grind"])
+			vars.checkpointSplits.Add("Grind Section");
+
+		if (settings["closet"])
+			vars.checkpointSplits.Add("Closet");
+
+		if (settings["homework"])
+			vars.checkpointSplits.Add("HomeWorkSection");
+
+		if (settings["marble"])
+			vars.checkpointSplits.Add("Marble Maze Room");
+
+		if (settings["hopDungeon"])
+			vars.checkpointSplits.Add("Hopscotch Dungeon");
+
+		if (settings["fidget"])
+			vars.checkpointSplits.Add("Fidget Spinners");
+
+		if (settings["void"])
+			vars.levelSplits.Add("/Game/Maps/PlayRoom/Hopscotch/VoidWorld_BP");
+
+		if (settings["kaleidoscope"])
+			vars.levelSplits.Add("/Game/Maps/PlayRoom/Hopscotch/Kaleidoscope_BP");
+
+		// Dino Land
+		if (settings["pteranodon"])
+			vars.cutsceneSplits.Add("EV_PlayRoom_DinoLand_PteranodonCrash");
+
+
+		// Pirates Ahoy
+		if (settings["corridor"])
+			vars.checkpointSplits.Add("Pirate_Part02_Corridor");
+
+		if (settings["ships"])
+			vars.cutsceneSplits.Add("CS_Playroom_Goldberg_Pirate_ShipsIntro");
+
+		if (settings["stream"])
+			vars.checkpointSplits.Add("Pirate_Part05_Stream");
+
+		if (settings["pirateBoss"])
+			vars.cutsceneSplits.Add("CS_PlayRoom_Goldberg_Pirate_BossIntro_MainScene");
+
+		// Greatest Show
+		if (settings["carousel"])
+			vars.checkpointSplits.Add("Circus_Carousel");
+
+		if (settings["trapeeze"])
+			vars.checkpointSplits.Add("Circus_Trapeeze");
+
+		// Once Upon a Time
+		if (settings["crane"])
+			vars.checkpointSplits.Add("Castle_Courtyard_CranePuzzle");
+
+		// Dungeon Crawler
+		if (settings["postDrawbridge"])
+			vars.checkpointSplits.Add("Castle_Dungeon_PostDrawBridge");
+
+		if (settings["postTeleporter"])
+			vars.checkpointSplits.Add("Castle_Dungeon_PostTeleporter");
+
+		if (settings["crusherIntro"])
+			vars.cutsceneSplits.Add("CS_Playroom_Castle_Dungeon_CrusherIntro");
+
+		if (settings["chess"])
+			vars.levelSplits.Add("/Game/Maps/PlayRoom/Chessboard/Castle_Chessboard_BP");
+
+		// Gates of Time
+		if (settings["clocktown"])
+			vars.cutsceneSplits.Add("CS_ClockWork_Outside_ClockTown_Intro");
+
+		if (settings["hellTower"])
+			vars.cutsceneSplits.Add("LS_Clockwork_Outside_ClockTown_RevealHellTower");
+
+		if (settings["birdIntro"])
+			vars.cutsceneSplits.Add("CS_ClockWork_Outside_Bird_Intro");
+
+		if (settings["rightTowerDestroyed"])
+			vars.checkpointSplits.Add("Right Tower Destroyed");
+
+		// Clockworks
+		if (settings["statue"])
+			vars.nextLoadSplits.Add("Statue Room");
+
+		if (settings["wallJump"])
+			vars.nextLoadSplits.Add("Wall Jump Corridor");
+
+		if (settings["pocketWatch"])
+			vars.nextLoadSplits.Add("Pocket Watch Room");
+
+		// A Blast from the Past
+		if (settings["afterRewindSmash"])
+			vars.cutsceneSplits.Add("CS_Clockwork_UpperTower_LastBoss_AfterRewindSmash");
+
+		// Beneath the Ice
+		/*if (settings["iceCave"])
+			vars.optionalSplits.Add("CoreBase"); // Check logic for this one
+
+		if (settings["fish"])
+			vars.optionalSplits.Add("CoreBase"); // Check logic for this one*/
+
+		// Slippery Slopes
+		if (settings["collapse"])
+			vars.nextLoadSplits.Add("3. Collapse");
+
+		if (settings["playerAttraction"])
+			vars.nextLoadSplits.Add("4. PlayerAttraction");
+
+		// Green Fingers
+		if (settings["cactus"])
+			vars.checkpointSplits.Add("Cactus Combat Area");
+
+		if (settings["beanstalk"])
+			vars.checkpointSplits.Add("Beanstalk Section");
+
+		if (settings["burrown"])
+			vars.checkpointSplits.Add("Burrown Enemy");
+
+		if (settings["window"])
+			vars.checkpointSplits.Add("Greenhouse Window");
+
+		// Weed Whacking
+		if (settings["spiderFight"])
+			vars.checkpointSplits.Add("Shrubbery_StartCombat");
+
+		if (settings["secondSpider"])
+			vars.checkpointSplits.Add("Shrubbery_SecondSpider");
+
+		if (settings["sinkingLog"])
+			vars.checkpointSplits.Add("Shrubbery_SinkingLog");
+
+		if (settings["finalCombat"])
+			vars.checkpointSplits.Add("Shrubbery_StartingFinalCombat");
+
+		if (settings["cactusWaves"])
+			vars.cutsceneSplits.Add("CS_Garden_Shrubbery_CactusWaves_Intro");
+
+		// Trespassing
+		if (settings["stealthStart"])
+			vars.checkpointSplits.Add("MoleTunnels_Stealth_Start");
+
+		if (settings["moleChase"])
+			vars.checkpointSplits.Add("MoleTunnels_MoleChase_Start");
+
+		if (settings["mole2D"])
+			vars.cutsceneSplits.Add("CS_Garden_Moletunnels_Chase_FallDownInto2D");
+
+		if (settings["gnome"])
+			vars.checkpointSplits.Add("MoleTunnels_MoleChase_2D_TreasureRoom");
+
+
+
+		// Frog Pond
+		if (settings["topFountainBulb"])
+			vars.checkpointSplits.Add("GrindSection");
+
+		if (settings["snail"])
+			vars.checkpointSplits.Add("Minigame_SnailRace");
+
+		// Affliction
+		if (settings["firstBulb"])
+			vars.checkpointSplits.Add("Greenhouse_FirstBulbExploded");
+
+		if (settings["joyIntro"])
+			vars.cutsceneSplits.Add("CS_Garden_GreenHouse_BossRoom_Intro");
+
+		if (settings["joyPhase2"])
+			vars.checkpointSplits.Add("Joy_Bossfight_Phase_2");
+
+		if (settings["joyPhase3"])
+			vars.checkpointSplits.Add("Joy_Bossfight_Phase_3");
+
+		// Setting the Stage
+		if (settings["trackRunner"])
+			vars.checkpointSplits.Add("MINIGAME_TrackRunner");
+
+		// Turn Up
+		if (settings["djElevator"])
+			vars.cutsceneSplits.Add("CS_Music_NightClub_Basement_Elevator");
+
+		if (settings["audioSurf"])
+			vars.checkpointSplits.Add("AudioSurf");
 	}
 }
 
 start
 {
 	if (current.isLoading)
-    {
+	{
 		if (vars.startLevels.Contains(current.levelString))
 			return true;
 
@@ -661,639 +781,93 @@ start
 	}
 }
 
+reset
+{
+	if (current.checkPointString != old.checkPointString || current.isLoading && !old.isLoading)
+    {
+		if (current.checkPointString == "Awakening_Start")
+        {
+			return true;
+        }
+
+		if (settings["levelReset"])
+        {
+			if (current.checkPointString == "Intro" && current.levelString == "/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP")
+				return true;
+
+			if (vars.resetIL.Contains(current.checkPointString))
+            {
+				if (old.checkPointString == "Forest Entry")
+					return false;
+				return true;
+			}
+				
+        }
+
+		if (settings["commGold"])
+		{
+			if (vars.resetComm.Contains(current.checkPointString))
+            {
+				if (vars.lastCutscene == "CS_Tree_Hive_Boss_Meet")
+					return false;
+				if (vars.resetCommException.Contains(old.checkPointString))
+					return false;
+				if (old.checkPointString == "Intro" && current.levelString == "/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP")
+					return false;
+				return true;
+			}
+		}
+	}
+}
+
+onReset
+{
+	vars.checkpointCount = 0;
+}
+
 split
 {
-	// Intermediaries (Deprecated)
-	if (settings["intermediaries"])
+	// Split on next load
+	if (vars.splitNextLoad && current.isLoading && !old.isLoading)
 	{
-		// Intermediary 1
-		if (current.levelString == "/Game/Maps/Tree/Approach/Approach_BP" && old.levelString == "/Game/Maps/RealWorld/RealWorld_Shed_StarGazing_Meet_BP")
-			return true;
-
-		// Intermediary 2
-		if (current.levelString == "/Game/Maps/PlayRoom/PillowFort/PillowFort_BP" && old.levelString == "/Game/Maps/RealWorld/RealWorld_Exterior_Roof_Crash_BP")
-			return true;
-
-		// Intermediary 3
-		if (current.levelString == "/Game/Maps/Clockwork/Outside/Clockwork_Tutorial_BP" && old.levelString == "/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Time_BP")
-			return true;
-
-		// Intermediary 4
-		if (current.levelString == "/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP" && old.levelString == "/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Attraction_BP")
-			return true;
-
-		// Intermediary 5
-		if (current.levelString == "/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP" && old.levelString == "/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Garden_BP")
-			return true;
-
-		// Intermediary 6
-		if (current.levelString == "/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP" && old.levelString == "/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Music_BP")
-			return true;
+		vars.splitNextLoad = false;
+		return true;
 	}
 
-
-
-
-	//The Shed
-	// Wake-Up Call to Biting the Dust
-	if (current.levelString == "/Game/Maps/Shed/Vacuum/Vacuum_BP" && old.levelString == "/Game/Maps/Shed/Awakening/Awakening_BP")
-		return true;
-
-	// Biting The Dust to The Depths
-	if (current.levelString == "/Game/Maps/Shed/Main/Main_Hammernails_BP" && old.levelString == "/Game/Maps/Shed/Vacuum/Vacuum_BP")
-		return true;
-
-	// The Depths to Wired Up
-	if (current.levelString == "/Game/Maps/Shed/Main/Main_Grindsection_BP" &&
-		(old.levelString == "/Game/Maps/Shed/Main/Main_Hammernails_BP" || old.levelString == "/Game/Maps/Shed/Main/Main_Bossfight_BP"))
-		return true;
-
-	// Wired Up to Fresh Air
-	if (current.levelString == "/Game/Maps/RealWorld/RealWorld_Shed_StarGazing_Meet_BP" && old.levelString == "/Game/Maps/Shed/Main/Main_Grindsection_BP")
-		return true;
-
-
-
-	//The Tree
-	// Fresh Air to Captured
-	if (current.levelString == "/Game/Maps/Tree/SquirrelHome/SquirrelHome_BP_Mech" && old.levelString == "/Game/Maps/Tree/SquirreTurf/SquirrelTurf_WarRoom_BP")
-		return true;
-
-	// Captured to Deeply Rooted
-	if (current.levelString == "/Game/Maps/Tree/WaspNest/WaspsNest_BP" && old.levelString == "/Game/Maps/Tree/SquirrelHome/SquirrelHome_BP_Mech")
-		return true;
-
-	// Deeply Rooted to Extermination
-	if (current.levelString == "/Game/Maps/Tree/Boss/WaspQueenBoss_BP" && old.levelString == "/Game/Maps/Tree/WaspNest/WaspsNest_BeetleRide_BP")
-		return true;
-
-	// Extermination to Getaway
-	if (current.levelString == "/Game/Maps/Tree/Escape/Escape_BP" && old.levelString == "/Game/Maps/Tree/SquirreTurf/SquirrelTurf_Flight_BP")
-		return true;
-
-	// Getaway to Pillow Fort
-	if (current.checkPointString == "Glider halfway through" && vars.lastCutscene == "CS_RealWorld_House_LivingRoom_Headache" && vars.lastCutsceneOld == "null")
-		return true;
-
-	/* // OLD SPLIT CONDITION
-	if(current.checkPointString == "Glider halfway through" && current.isCutscene && !old.isCutscene)
-		return true;*/
-
-
-
-	//Rose's Room
-	// Pillow Fort to Spaced Out
-	if (current.levelString == "/Game/Maps/PlayRoom/Spacestation/Spacestation_Hub_BP" && old.levelString == "/Game/Maps/PlayRoom/PillowFort/PillowFort_BP")
-		return true;
-
-	// Spaced Out to Hopscotch
-	if (current.levelString == "/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP" && old.levelString == "/Game/Maps/RealWorld/Realworld_SpaceStation_Bossfight_BeamOut_BP")
-		return true;
-
-	// Hopscotch to Train Station
-	if (current.levelString == "/Game/Maps/PlayRoom/Goldberg/Goldberg_Trainstation_BP" && old.levelString == "/Game/Maps/PlayRoom/Hopscotch/Kaleidoscope_BP")
-		return true;
-
-	// Train Station to Dino Land
-	if (current.levelString == "/Game/Maps/PlayRoom/Goldberg/Goldberg_Dinoland_BP" && vars.lastCutsceneOld == "CS_PlayRoom_DinoLand_DinoCrash_Intro" && vars.lastCutscene == "null")
-		return true;
-
-	// Dino Land to Pirates Ahoy
-	if (current.levelString == "/Game/Maps/PlayRoom/Goldberg/Goldberg_Pirate_BP" && old.levelString == "/Game/Maps/PlayRoom/Goldberg/Goldberg_Dinoland_BP")
-		return true;
-
-	// Pirates Ahoy to The Greatest Show
-	if (current.levelString == "/Game/Maps/PlayRoom/Goldberg/Goldberg_Circus_BP" && vars.lastCutsceneOld == "CS_PlayRoom_Circus_Balloon_Intro" && vars.lastCutscene == "null")
-		return true;
-
-	// The Greatest Show to Once Upon a Time
-	if (current.levelString == "/Game/Maps/PlayRoom/Courtyard/Castle_Courtyard_BP" && old.levelString == "/Game/Maps/PlayRoom/Goldberg/Goldberg_Circus_BP")
-		return true;
-
-	// Once Upon a Time to Dungeon Crawler
-	if (current.levelString == "/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_BP" && old.levelString == "/Game/Maps/PlayRoom/Courtyard/Castle_Courtyard_BP")
-		return true;
-
-	// Dungeon Crawler to The Queen
-	if (current.levelString == "/Game/Maps/PlayRoom/Shelf/Shelf_BP" && old.levelString == "/Game/Maps/PlayRoom/Chessboard/Castle_Chessboard_BP")
-		return true;
-
-	// The Queen to Gates of Time
-	if (current.levelString == "/Game/Maps/RealWorld/RealWorld_RoseRoom_Bed_Tears_BP" && old.levelString == "/Game/Maps/PlayRoom/Shelf/Shelf_BP")
-		return true;
-
-
-
-	//Cuckoo Clock
-	// Gates of Time to Clockworks
-	if (current.levelString == "/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_CrushingTrapRoom_BP" &&
-		(old.levelString == "/Game/Maps/Clockwork/Outside/Clockwork_ClockTowerCourtyard_BP" ||
-		old.levelString == "/Game/Maps/Clockwork/Outside/Clockwork_Forest_BP"))
-		return true;
-
-	// Clockworks to A Blast from the Past
-	if (current.levelString == "/Game/Maps/Clockwork/UpperTower/Clockwork_ClockTowerLastBoss_BP" &&
-		(old.levelString == "/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_CuckooBirdRoom_BP" ||
-		old.levelString == "/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_EvilBirdRoom_BP"))
-		return true;
-
-	// A Blast from the Past to Warming Up
-	if (current.checkPointString == "Sprint To Couple" && vars.lastCutscene == "CS_ClockWork_UpperTower_EndingRewind" && vars.lastCutsceneOld == "null")
-		return true;
-
-	/* // OLD SPLIT CONDITION
-	if (current.checkPointString == "Sprint To Couple" && current.isCutscene && !old.isCutscene)
-		return true;*/
-
-
-
-	//Snow Globe
-	// Warming Up to Winter Village
-	if (current.levelString == "/Game/Maps/SnowGlobe/Town/SnowGlobe_Town_BP" && (old.levelString == "/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP" ||
-		old.levelString == "/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_TownGate_BP"))
-		return true;
-
-	// Winter Village to Beneath the Ice
-	if (current.levelString == "/Game/Maps/SnowGlobe/Lake/Snowglobe_Lake_BP" && old.levelString == "/Game/Maps/SnowGlobe/Town/SnowGlobe_Town_BobSled")
-		return true;
-
-	// Beneath the Ice to Slippery Slopes
-	if (current.levelString == "/Game/Maps/SnowGlobe/Mountain/SnowGlobe_Mountain_BP" && old.levelString == "/Game/Maps/SnowGlobe/Lake/Snowglobe_Lake_BP")
-		return true;
-
-	// Slippery Slopes to Green Fingers
-	if (current.checkPointString == "TerraceProposalCutscene" && old.checkPointString != "TerraceProposalCutscene")
-		return true;
-
-
-
-	//Garden
-	// Green Fingers to Weed Whacking
-	if (current.levelString == "/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_BP" && old.levelString == "/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP")
-		return true;
-
-	// Weed Whacking to Trespassing
-	if (current.levelString == "/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Stealth_BP" &&
-		(old.levelString == "/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_SecondCombat_BP" || old.levelString == "/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_BP"))
-		return true;
-
-	// Trespassing to Frog Pond
-	if (current.levelString == "/Game/Maps/Garden/FrogPond/Garden_FrogPond_BP" &&
-		(old.levelString == "/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Chase_BP" || old.levelString == "/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Stealth_BP"))
-		return true;
-
-	// Frog Pond to Affliction
-	if (current.levelString == "/Game/Maps/Garden/Greenhouse/Garden_Greenhouse_BP" && old.levelString == "/Game/Maps/Garden/FrogPond/Garden_FrogPond_BP")
-		return true;
-
-	// Affliction to Setting the Stage
-	if (vars.lastCutscene == "CS_Garden_GreenHouse_BossRoom_Outro" && vars.lastCutsceneOld == "null" && current.checkPointString == "Joy_Bossfight_Phase_3_Combat")
-		return true;
-
-	/* // OLD SPLIT CONDITION
-	if(current.checkPointString == "Joy_Bossfight_Phase_3_Combat")
-	{
-		if(old.checkPointString != "Joy_Bossfight_Phase_3_Combat")
-			current.cutsceneCount = 0;
-		if(current.isLoading && !old.isLoading)
-			current.cutsceneCount = 1;
-		if(current.isCutscene && !old.isCutscene)
-    		{
-        		current.cutsceneCount++;
-        		if(current.cutsceneCount == 3)
-            			return true;
-    		}
-	}*/
-
-
-
-	//The Attic
-	// Setting the Stage / Symphony to Turn Up
-	if (current.levelString == "/Game/Maps/Music/Nightclub/Music_Nightclub_BP" && old.levelString == "/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP")
-		return true;
-
-	// Setting the Stage to Rehearsal (Inbounds/OOB Only)
-	if (current.levelString == "/Game/Maps/Music/Backstage/Music_Backstage_Tutorial_BP" && old.levelString == "/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP")
-		return true;
-
-	// Rehearsal to Symphony (Inbounds/OOB Only)
-	if (current.levelString == "/Game/Maps/Music/Classic/Music_Classic_Organ_BP" && old.levelString == "/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP")
-		return true;
-
-	// Turn up to A Grand Finale
-	if (current.levelString == "/Game/Maps/Music/Ending/Music_Ending_BP" && old.levelString == "/Game/Maps/Music/Nightclub/Music_Nightclub_BP")
-		return true;
-
-	// Ending
-	if (vars.lastCutscene == "CS_Music_Attic_Stage_ClimacticKiss" && vars.lastCutsceneOld == "CT_Music_Ending_Smooch")
-		return true;
-
-	/* // OLD SPLIT CONDITION
-	if(current.checkPointString == "MayInDressingRoom")
-	{
-		if(old.checkPointString != "MayInDressingRoom")
-			current.cutsceneCount = 0;
-		if(current.isCutscene && !old.isCutscene) // Count cutscenes in A Grand Finale to end timer after kiss
-    		{
-        		current.cutsceneCount++;
-        		if(current.cutsceneCount == 2)
-            			return true;
-        }
-    }*/
-
-	if (settings["optionalSplits"])
-	{
-		// Split on next load
-		if (vars.splitNextLoad && current.isLoading && !old.isLoading)
-		{
-			vars.splitNextLoad = false;
-			return true;
-		}
-
-
-		// Biting the Dust
-		// Side Scroller CP
-		if (settings["sidescrollerCP"] && old.checkPointString != current.checkPointString && current.checkPointString == "Side Scroller")
+	if (old.levelString != current.levelString)
+    {
+		if (vars.levelSplits.Contains(current.levelString))
         {
+			if (vars.levelSplitExceptions.Contains(old.levelString))
+				return false;
+			return true;
+		}
+	
+    }
+
+	if (old.checkPointString != current.checkPointString)
+	{
+		if (vars.checkpointSplits.Contains(current.checkPointString))
+			return true;
+
+		if (vars.nextLoadSplits.Contains(current.checkPointString))
 			vars.splitNextLoad = true;
-		}
+	}
 
-		// Vacuum Battle
-		if (settings["vacuumBattle"] && vars.lastCutscene == "CS_Shed_Awakening_Vacuum_Battle" && vars.lastCutsceneOld == "null")
-		{
+	if (vars.lastCutsceneOld != vars.lastCutscene)
+    {
+		if (vars.lastCutscene == "CS_Music_Attic_Stage_ClimacticKiss") // Ending split, always active.
 			return true;
-		}
 
-
-		// The Depths
-		// Minigame Intro
-		if (settings["minigameIntro"] && vars.lastCutscene == "CS_Shed_Tambourine_MiniGame_Intro" && vars.lastCutsceneOld == "null")
-		{
+		if (vars.cutsceneSplits.Contains(vars.lastCutscene))
 			return true;
-		}
 
-		// Pre Boss Double Interact
-		if (settings["preBossDoubleInteract"] && old.checkPointString != current.checkPointString && current.checkPointString == "Pre Boss Double Interact")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// Toolboss Intro
-		if (settings["toolbossIntro"] && vars.lastCutscene == "CS_Shed_Main_ToolBoss_Battle" && vars.lastCutsceneOld == "null")
-		{
+		if (vars.postCutsceneSplits.Contains(vars.lastCutsceneOld))
 			return true;
-		}
+    }
 
-		// Toolbox Boss Battle
-		if (settings["toolbossBattle"] && old.checkPointString != current.checkPointString && current.checkPointString == "MainBossFightStarted")
-		{
-			return true;
-		}
-
-
-		// Captured
-		// Minigame Tug of War
-		if (settings["tug"] && old.checkPointString != current.checkPointString && current.checkPointString == "MINIGAME_TugOfWar")
-		{
-			return true;
-		}
-
-
-		// Deeply Rooted
-		// Boat Start
-		if (settings["boatStart"] && old.levelString == "/Game/Maps/Tree/WaspNest/WaspsNest_BP" && current.levelString == "/Game/Maps/Tree/Boat/Tree_Boat_BP")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// Boat Swarm
-		if (settings["boatSwarm"] && old.checkPointString != current.checkPointString && current.checkPointString == "Boat Checkpoint Swarm")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// DarkRoom Start
-		if (settings["darkroomStart"] && old.levelString == "/Game/Maps/Tree/Boat/Tree_Boat_BP" && current.levelString == "/Game/Maps/Tree/Darkroom/Tree_Darkroom_BP")
-		{
-			return true;
-		}
-
-		// Second Lantern
-		if (settings["secondLantern"] && old.checkPointString != current.checkPointString && current.checkPointString == "SecondLantern")
-		{
-			return true;
-		}
-
-		// Third Lantern
-		if (settings["thirdLantern"] && old.checkPointString != current.checkPointString && current.checkPointString == "ThirdLantern")
-		{
-			return true;
-		}
-
-		// Beetle Elevator
-		if (settings["beetleElevator"] && old.levelString == "/Game/Maps/Tree/Darkroom/Tree_Darkroom_BP" &&
-			current.levelString == "/Game/Maps/Tree/WaspNest/WaspsNest_Elevator_BP")
-		{
-			return true;
-		}
-
-		// Beetle Arena
-		if (settings["beetleArena"] && vars.lastCutscene == "CS_Tree_WaspNest_Arena_Intro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
-		// Extermination
-		// Plane Intro
-		if (settings["planeIntro"] && vars.lastCutscene == "CS_Tree_WaspQueenBoss_Arena_PlaneIntro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Smash in Wood
-		if (settings["smashWood"] && vars.lastCutscene == "CS_Tree_WaspQueenBoss_Arena_SmashInWood" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
-		// Getaway
-		// Glider Halfway through
-		if (settings["gliderHalfway"] && old.checkPointString != current.checkPointString && current.checkPointString == "Glider halfway through")
-		{
-			return true;
-		}
-
-
-		// Pillow Fort
-		// Pillow Fort Doll Room Cutscene
-		if (settings["pillowDolls"] && vars.lastCutscene == "CS_PlayRoom_PillowFort_Dolls_Dialogue" && vars.lastCutsceneOld == "null")
-        {
-			return true;
-        }
-
-		// Pillow Fort Final Room
-		if (settings["pillowFinal"] && old.checkPointString != current.checkPointString && current.checkPointString == "PillowfortFinalRoom")
-        {
-			return true;
-        }
-
-
-		// Spaced Out
-		// First Portal Platform
-		if (settings["firstPlatform"] && old.checkPointString != current.checkPointString && current.checkPointString == "FirstPortalPlatform")
-		{
-			return true;
-		}
-
-		// Green Portal
-		if (settings["greenPortal"] && vars.lastCutscene == "EV_PlayRoom_SpaceStation_BalanceScales_ReturnToPortal" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Red Portal
-		if (settings["redPortal"] && vars.lastCutscene == "EV_PlayRoom_SpaceStation_Planets_ReturnToPortal" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Purple Portal
-		if (settings["purplePortal"] && vars.lastCutscene == "EV_PlayRoom_SpaceStation_PlasmaBall_ReturnToPortal" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Umbrella Portal
-		if (settings["umbrellaPortal"] && vars.lastCutscene == "EV_PlayRoom_SpaceStation_SpaceBowl_ReturnToPortal" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Pillow Portal
-		if (settings["pillowPortal"] && vars.lastCutscene == "EV_PlayRoom_SpaceStation_LaunchBoard_ReturnToPortal" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Cube Portal
-		if (settings["cubePortal"] && vars.lastCutscene == "EV_PlayRoom_SpaceStation_Electricity_ReturnToPortal" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Laser Pointer
-		if (settings["laserPointer"] && old.checkPointString != current.checkPointString && current.checkPointString == "MoonBaboonLaserPointer")
-		{
-			return true;
-		}
-
-		// Rocket Phase
-		if (settings["rocketPhase"] && old.checkPointString != current.checkPointString && current.checkPointString == "MoonBaboonRocketPhase")
-		{
-			return true;
-		}
-
-		// Inside UFO
-		if (settings["insideUFO"] && old.checkPointString != current.checkPointString && current.checkPointString == "MoonBaboonInsideUFO")
-		{
-			return true;
-		}
-
-		// UFO Eject Button
-		if (settings["eject"] && vars.lastCutscene == "CS_PlayRoom_SpaceStation_BossFight_Eject" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
-		// Hopscotch
-		// Grind Section
-		if (settings["grind"] && old.checkPointString != current.checkPointString && current.checkPointString == "Grind Section" && old.checkPointString != "MINIGAME_Rodeo")
-		{
-			return true;
-		}
-
-		// Closet CP
-		if (settings["closet"] && old.checkPointString != current.checkPointString && current.checkPointString == "Closet")
-		{
-			return true;
-		}
-
-		// Homework Section
-		if (settings["homework"] && old.checkPointString != current.checkPointString && current.checkPointString == "HomeWorkSection")
-		{
-			return true;
-		}
-
-		// Marble Maze
-		if (settings["marble"] && old.checkPointString != current.checkPointString && current.checkPointString == "Marble Maze Room")
-		{
-			return true;
-		}
-
-		// Hopscotch Dungeon
-		if (settings["hopDungeon"] && old.checkPointString != current.checkPointString && current.checkPointString == "Hopscotch Dungeon")
-		{
-			return true;
-		}
-
-		// Fidget Spinners CP
-		if (settings["fidget"] && old.checkPointString != current.checkPointString && current.checkPointString == "Fidget Spinners")
-		{
-			return true;
-		}
-
-		// Void World
-		if (settings["void"] && old.levelString == "/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP" && current.levelString == "/Game/Maps/PlayRoom/Hopscotch/VoidWorld_BP")
-		{
-			return true;
-		}
-
-		// Kaleidoscope
-		if (settings["kaleidoscope"] && old.levelString == "/Game/Maps/PlayRoom/Hopscotch/VoidWorld_BP" && current.levelString == "/Game/Maps/PlayRoom/Hopscotch/Kaleidoscope_BP")
-		{
-			return true;
-		}
-
-
-		// Dino Land
-		// Pteranodon
-		if (settings["pteranodon"] && vars.lastCutscene == "EV_PlayRoom_DinoLand_PteranodonCrash" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
-		// Pirates Ahoy
-		// Corridor CP
-		if (settings["corridor"] && old.checkPointString != current.checkPointString && current.checkPointString == "Pirate_Part02_Corridor")
-		{
-			return true;
-		}
-
-		// Ships Intro
-		if (settings["ships"] && vars.lastCutscene == "CS_Playroom_Goldberg_Pirate_ShipsIntro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Stream
-		if (settings["stream"] && old.checkPointString != current.checkPointString && current.checkPointString == "Pirate_Part05_Stream")
-		{
-			return true;
-		}
-
-		// Boss Start
-		if (settings["pirateBoss"] && vars.lastCutscene == "CS_PlayRoom_Goldberg_Pirate_BossIntro_MainScene" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
-		// Greatest Show
-		// Carousel
-		if (settings["carousel"] && old.checkPointString != current.checkPointString && current.checkPointString == "Circus_Carousel")
-		{
-			return true;
-		}
-
-		// Trapeeze
-		if (settings["trapeeze"] && old.checkPointString != current.checkPointString && current.checkPointString == "Circus_Trapeeze")
-		{
-			return true;
-		}
-
-
-		// Once Upon a Time
-		// Crane
-		if (settings["crane"] && old.checkPointString != current.checkPointString && current.checkPointString == "Castle_Courtyard_CranePuzzle")
-		{
-			return true;
-		}
-
-
-		// Dungeon Crawler
-		// Post Drawbridge
-		if (settings["postDrawbridge"] && old.checkPointString != current.checkPointString && current.checkPointString == "Castle_Dungeon_PostDrawBridge")
-		{
-			return true;
-		}
-
-		// Post Teleporter
-		if (settings["postTeleporter"] && old.checkPointString != current.checkPointString && current.checkPointString == "Castle_Dungeon_PostTeleporter")
-		{
-			return true;
-		}
-
-		// Crusher Intro
-		if (settings["crusherIntro"] && vars.lastCutscene == "CS_Playroom_Castle_Dungeon_CrusherIntro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Chess
-		if (settings["chess"] && old.levelString == "/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_Charger_BP" && current.levelString == "/Game/Maps/PlayRoom/Chessboard/Castle_Chessboard_BP")
-		{
-			return true;
-		}
-
-
-		// Gates of Time
-		// Clocktown Intro
-		if (settings["clocktown"] && vars.lastCutscene == "CS_ClockWork_Outside_ClockTown_Intro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Hell Tower
-		if (settings["hellTower"] && vars.lastCutscene == "LS_Clockwork_Outside_ClockTown_RevealHellTower" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Bird Intro
-		if (settings["birdIntro"] && vars.lastCutscene == "CS_ClockWork_Outside_Bird_Intro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-		// Right Tower Destroyed
-		if (settings["rightTowerDestroyed"] && old.checkPointString != current.checkPointString && current.checkPointString == "Right Tower Destroyed")
-		{
-			vars.splitNextLoad = true;
-		}
-
-
-		// Clockworks
-		// Statue Room
-		if (settings["statue"] && old.checkPointString != current.checkPointString && current.checkPointString == "Statue Room")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// Wall Jump Corridor
-		if (settings["wallJump"] && old.checkPointString != current.checkPointString && current.checkPointString == "Wall Jump Corridor")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// Pocket Watch Room
-		if (settings["pocketWatch"] && old.checkPointString != current.checkPointString && current.checkPointString == "Pocket Watch Room")
-		{
-			vars.splitNextLoad = true;
-		}
-
-
-		// A Blast from the Past
-		// After Rewind Smash
-		if (settings["afterRewindSmash"] && vars.lastCutscene == "CS_Clockwork_UpperTower_LastBoss_AfterRewindSmash" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
+	/*if (settings["optionalSplits"])
+	{
 		// Beneath the Ice
 		// Ice Cave Done
 		if (vars.iceCaveDone == 0 && old.checkPointString != current.checkPointString && current.checkPointString == "CoreBase")
@@ -1311,120 +885,8 @@ split
 			vars.iceCaveDone = 2;
 			vars.splitNextLoad = true;
 		}
-
-
-		// Slippery Slopes
-		// Collapse
-		if (settings["collapse"] && old.checkPointString != current.checkPointString && current.checkPointString == "3. Collapse")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// Player Attraction
-		if (settings["playerAttraction"] && old.checkPointString != current.checkPointString && current.checkPointString == "4. PlayerAttraction")
-		{
-			vars.splitNextLoad = true;
-		}
-
-
-		// Green Fingers
-		// Cactus
-		if (settings["cactus"] && old.checkPointString != current.checkPointString && current.checkPointString == "Cactus Combat Area")
-		{
-			return true;
-		}
-
-		// Beanstalk
-		if (settings["beanstalk"] && old.checkPointString != current.checkPointString && current.checkPointString == "Beanstalk Section")
-		{
-			return true;
-		}
-
-		// Burrown
-		if (settings["burrown"] && old.checkPointString != current.checkPointString && current.checkPointString == "Burrown Enemy")
-		{
-			return true;
-		}
-
-		// Greenhouse Window
-		if (settings["window"] && old.checkPointString != current.checkPointString && current.checkPointString == "Greenhouse Window")
-		{
-			return true;
-		}
-
-
-		// Weed Whacking
-		// Starting Final Combat
-		if (settings["finalCombat"] && old.checkPointString != current.checkPointString && current.checkPointString == "Shrubbery_StartingFinalCombat")
-		{
-			vars.splitNextLoad = true;
-		}
-
-		// Final Combat Second Wave
-		if (settings["cactusWaves"] && vars.lastCutscene == "CS_Garden_Shrubbery_CactusWaves_Intro" && vars.lastCutsceneOld == "null")
-		{
-			return true;
-		}
-
-
-		// Trespassing
-		// Gnome RCP
-		if (settings["gnome"] && old.checkPointString != current.checkPointString && current.checkPointString == "MoleTunnels_MoleChase_2D_TreasureRoom")
-		{
-			return true;
-		}
-
-
-		// Frog Pond
-		// Minigame Snail Race
-		if (settings["snail"] && old.checkPointString != current.checkPointString && current.checkPointString == "Minigame_SnailRace")
-		{
-			return true;
-		}
-
-
-		// Affliction
-		// Joy Intro
-		if (settings["joyIntro"] && vars.lastCutscene == "null" && vars.lastCutsceneOld == "CS_Garden_GreenHouse_BossRoom_Intro")
-		{
-			return true;
-		}
-
-		// Joy Phase 2
-		if (settings["joyPhase2"] && old.checkPointString != current.checkPointString && current.checkPointString == "Joy_Bossfight_Phase_2")
-		{
-			return true;
-		}
-
-		// Joy Phase 3
-		if (settings["joyPhase3"] && old.checkPointString != current.checkPointString && current.checkPointString == "Joy_Bossfight_Phase_3")
-		{
-			return true;
-		}
-
-
-		// Setting the Stage
-		// Track Runner
-		if (settings["trackRunner"] && old.checkPointString != current.checkPointString && current.checkPointString == "MINIGAME_TrackRunner")
-		{
-			return true;
-		}
-
-
-		// Turn Up
-		// DJ Elevator
-		if (settings["djElevator"] && vars.lastCutscene == "CS_Music_NightClub_Basement_Elevator" && vars.lastCutsceneOld == "CT_Music_Nightclub_Basement_DjElevator")
-		{
-			return true;
-		}
-
-		// Audio Surf
-		if (settings["audioSurf"] && old.checkPointString != current.checkPointString && current.checkPointString == "AudioSurf")
-		{
-			return true;
-		}
-	}
-	}
+	}*/
+}
 
 init
 {
@@ -1441,7 +903,123 @@ init
 	vars.cpListCount = 0;
 	vars.vacuumSidescroller = false;
 
-	vars.startLevels = new List<string>()
+	vars.optionalSplits = new List<string>(){};
+
+    vars.defaultSplits = new List<string>()
+    {
+		"/Game/Maps/Shed/Vacuum/Vacuum_BP",
+		"/Game/Maps/Shed/Main/Main_Hammernails_BP",
+		"/Game/Maps/Shed/Main/Main_Grindsection_BP",
+		"/Game/Maps/RealWorld/RealWorld_Shed_StarGazing_Meet_BP",
+		"/Game/Maps/Tree/SquirrelHome/SquirrelHome_BP_Mech",
+		"/Game/Maps/Tree/WaspNest/WaspsNest_BP",
+		"/Game/Maps/Tree/Boss/WaspQueenBoss_BP",
+		"/Game/Maps/Tree/Escape/Escape_BP",
+		"/Game/Maps/PlayRoom/Spacestation/Spacestation_Hub_BP",
+		"/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Trainstation_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Pirate_BP",
+		"/Game/Maps/PlayRoom/Courtyard/Castle_Courtyard_BP",
+		"/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_BP",
+		"/Game/Maps/PlayRoom/Shelf/Shelf_BP",
+		"/Game/Maps/RealWorld/RealWorld_RoseRoom_Bed_Tears_BP",
+		"/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_CrushingTrapRoom_BP",
+		"/Game/Maps/Clockwork/UpperTower/Clockwork_ClockTowerLastBoss_BP",
+		"/Game/Maps/SnowGlobe/Town/SnowGlobe_Town_BP",
+		"/Game/Maps/SnowGlobe/Lake/Snowglobe_Lake_BP",
+		"/Game/Maps/SnowGlobe/Mountain/SnowGlobe_Mountain_BP",
+		"/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_BP",
+		"/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Stealth_BP",
+		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_BP",
+		"/Game/Maps/Garden/Greenhouse/Garden_Greenhouse_BP",
+		"/Game/Maps/Music/Nightclub/Music_Nightclub_BP",
+		"/Game/Maps/Music/Backstage/Music_Backstage_Tutorial_BP",
+		"/Game/Maps/Music/Classic/Music_Classic_Organ_BP",
+		"/Game/Maps/Music/Ending/Music_Ending_BP",
+		
+	};
+
+	vars.defaultSplitsCS = new List<string>()
+    {
+		"CS_RealWorld_House_LivingRoom_Headache",
+		"CS_ClockWork_UpperTower_EndingRewind",
+		"CS_Garden_GreenHouse_BossRoom_Outro",
+	};
+
+	vars.defaultSplitsPCS = new List<string>()
+    {
+		"CS_PlayRoom_DinoLand_DinoCrash_Intro",
+		"CS_PlayRoom_Circus_Balloon_Intro",
+	};
+
+	vars.levelSplitExceptions = new List<string>()
+    {
+		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_SnailRace_BP",
+		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_FountainPuzzle_BP",
+	};
+
+    // vars.defaultSplitsCP = new List<string>(){"TerraceProposalCutscene",};
+
+    vars.cutsceneSplits = new List<string>() { };
+    vars.postCutsceneSplits = new List<string>() { };
+	vars.checkpointSplits = new List<string>() { };
+	vars.levelSplits = new List<string>() { };
+	vars.nextLoadSplits = new List<string>() { };
+
+	vars.resetIL = new List<string>()
+    {
+		"Tree_Approach_LevelIntro",
+		"PillowFort",
+		"ClockworkIntro",
+		"ConcertHall_Backstage",
+		"Forest Entry",
+	};
+
+	vars.resetComm = new List<string>()
+    {
+		"VacuumIntro",
+		"MineIntro",
+		"GrindSection_Start",
+		"Tree_Approach_LevelIntro",
+		"Entry",
+		"StartWaspBossPhase1",
+		"Intro",
+		"PillowFort",
+		"SpaceStationIntro",
+		"Trainstation_Start",
+		"Dinoland_Start",
+		"Pirate_Part01_Start",
+		"Circus_Start",
+		"Castle_Courtyard_Start",
+		"Castle_Dungeon",
+		"Shelf_Cutie_Intro",
+		"ClockworkIntro",
+		"Crusher Trap Room",
+		"Boss Intro",
+		"Forest Entry",
+		"Town Entry",
+		"0. Entry",
+		"Shrubbery_Enter",
+		"MoleTunnels_Level_Intro",
+		"Greenhouse_Intro",
+		"ConcertHall_Backstage",
+		"Tutorial_Intro",
+		"Classic_01_Attic_Intro",
+		"RainbowSlide",
+		"EndingIntro",
+	};
+
+	vars.resetCommException = new List<string>()
+    {
+		"Side Scroller",
+		"LoadDinoLand",
+		"Pirate_Part09_BossEnd",
+		"Pirate_Part09_BossEndWithoutCutscene",
+		"GrindSection_Start",
+		"Boss Intro",
+	};
+
+    vars.startLevels = new List<string>()
 	{
 		"/Game/Maps/Shed/Awakening/Awakening_BP",
 		"/Game/Maps/Tree/Approach/Approach_BP",
@@ -1736,7 +1314,7 @@ init
         "Shrubbery_StartingFinalCombat",
         "Shrubbery_StartingFinalCombatSecondWave",
 		//"Shrubbery_SecondCombatFirstWaveFinished", // Weird, not listed in dev menu, only gotten through RCP, not in save file.
-		"Shrubbery_Outro",
+		//"Shrubbery_Outro", // Dev CP
         "MoleTunnels_Level_Intro",
         "MoleTunnels_Level_Start",
         "MoleTunnels_Stealth_Start",
@@ -1822,8 +1400,15 @@ init
 		Roses Room = 75
 		Clock      = 33
 		Snow       = 24
-		Garden     = 56
+		Garden     = 55
 		Music      = 45
 
-		Total      = 325*/
+		Total      = 324*/
+
+
+
+	/*
+	 * TO-DO LIST:
+	 * 
+	 */
 }
