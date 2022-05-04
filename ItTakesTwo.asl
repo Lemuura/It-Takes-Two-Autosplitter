@@ -225,16 +225,30 @@ startup
 	settings.Add("slopes", false, "Slippery Slopes");
 
 	settings.CurrentDefaultParent = "warming";
+	settings.Add("timber", false, "Timber");
+	settings.Add("mill", false, "Mill (Cody CP)");
+	settings.Add("flipper", false, "Flipper (May CP)");
+	settings.Add("cabin", false, "Cabin");
 
 	settings.CurrentDefaultParent = "village";
+	settings.Add("townDoor", false, "Town Door");
+	settings.Add("bobsledCP", false, "Bobsled CP");
+	settings.SetToolTip("bobsledCP", 
+		"This can trigger 2 places: When you hit the trigger on the mountain, like in Any%. \n" +
+		"Or when you interact with the cablecar, this is the one that gives you the actual CP.");
+
 
 	settings.CurrentDefaultParent = "bti";
-	settings.Add("iceCave", false, "Ice Cave Finish (Doesn't work atm)");
-	settings.Add("fish", false, "Fish RCP (Doesn't work atm)");
+	settings.Add("iceCave", false, "Ice Cave Finish CS");
+	settings.Add("lakeIceCave", false, "Lake Ice Cave RCP (100%)");
+	//settings.Add("fish", false, "Fish RCP (Doesn't work atm)");
 
 	settings.CurrentDefaultParent = "slopes";
-	settings.Add("collapse", false, "Collapse RCP");
-	settings.Add("playerAttraction", false, "Player Attraction RCP");
+	settings.Add("iceCaveSlopes", false, "Ice Cave");
+	settings.Add("caveSkating", false, "Cave Skating");
+	settings.Add("collapse", false, "Collapse");
+	settings.Add("playerAttraction", false, "Player Attraction");
+	settings.Add("windWalk", false, "Wind Walk");
 
 	settings.CurrentDefaultParent = "garden";
 	settings.Add("fingers", false, "Green Fingers");
@@ -378,19 +392,22 @@ update
 	if (current.cutsceneString != null && current.cutsceneString.Length > 1) vars.lastCutscene = current.cutsceneString;
 
 	if (current.checkPointString == "Side Scroller")
-    {
 		vars.vacuumSidescroller = true;
-	}
+
+	if (old.checkPointString != current.checkPointString)
+		print(current.checkPointString);
 
 	if (settings["cpCount"])
     {
+		if (old.checkPointString == "TherapyRoom_Attraction_Session" && current.checkPointString == "Forest Entry")
+			vars.checkpointCount += 2;
+
 		if (current.checkPointString != old.checkPointString && vars.cpList.Contains(current.checkPointString) && 
 			old.checkPointString != "MINIGAME_Rodeo" && old.checkPointString != "Main Menu" && old.checkPointString != "Awakening_ChaseFuses")
         {
 			if (vars.vacuumSidescroller && (current.checkPointString == "VacuumIntro" || current.checkPointString == "VacuumNoIntro"))
-            {
 				return;
-            }
+
 			if (current.checkPointString == "GrindSection_Start" || /*current.checkPointString == "StartWaspBossPhase1" ||*/ 
 				current.checkPointString == "Pirate_Part09_BossEnd" || current.checkPointString == "Tower Courtyard" ||
 				current.checkPointString == "Statue Room - Both Side Rooms Completed" || current.checkPointString == "Boss Intro")
@@ -403,6 +420,7 @@ update
 			}
 				vars.checkpointCount++;
 		}
+
 		vars.SetTextComponent("CP: ", vars.checkpointCount.ToString() + "/" + (vars.cpListCount));
 	}
 
@@ -436,6 +454,9 @@ onStart
 
 	if (vars.checkpointCount != 1)
 		vars.checkpointCount = 1;
+
+	if (current.levelString == "/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP")
+		vars.checkpointCount = 2;
 
 	if (settings["levelReset"] && current.checkPointString != "Main Menu")
 	{
@@ -678,19 +699,51 @@ onStart
 		if (settings["afterRewindSmash"])
 			vars.cutsceneSplits.Add("CS_Clockwork_UpperTower_LastBoss_AfterRewindSmash");
 
-		// Beneath the Ice
-		/*if (settings["iceCave"])
-			vars.optionalSplits.Add("CoreBase"); // Check logic for this one
+		// Warming Up
+		if (settings["timber"])
+			vars.checkpointSplits.Add("Timber");
 
-		if (settings["fish"])
-			vars.optionalSplits.Add("CoreBase"); // Check logic for this one*/
+		if (settings["mill"])
+			vars.checkpointSplits.Add("Mill");
+
+		if (settings["flipper"])
+			vars.checkpointSplits.Add("Flipper");
+
+		if (settings["cabin"])
+			vars.checkpointSplits.Add("Cabin");
+
+		// Winter Village
+		if (settings["townDoor"])
+			vars.checkpointSplits.Add("Town Door");
+
+		if (settings["bobsledCP"])
+			vars.checkpointSplits.Add("Town Bobsled");
+
+		// Beneath the Ice
+		if (settings["iceCave"])
+			vars.cutsceneSplits.Add("LS_Snowglobe_Lake_IceCaveFinish"); 
+
+		if (settings["lakeIceCave"])
+			vars.nextLoadSplits.Add("LakeIceCave");
+
+		//if (settings["fish"])
+		//	vars.optionalSplits.Add("CoreBase"); // Check logic for this one
 
 		// Slippery Slopes
+		if (settings["iceCaveSlopes"])
+			vars.checkpointSplits.Add("1. IceCave");
+
+		if (settings["caveSkating"])
+			vars.checkpointSplits.Add("2. CaveSkating");
+
 		if (settings["collapse"])
-			vars.nextLoadSplits.Add("3. Collapse");
+			vars.checkpointSplits.Add("3. Collapse");
 
 		if (settings["playerAttraction"])
-			vars.nextLoadSplits.Add("4. PlayerAttraction");
+			vars.checkpointSplits.Add("4. PlayerAttraction");
+
+		if (settings["windwalk"])
+			vars.checkpointSplits.Add("5. WindWalk");
 
 		// Green Fingers
 		if (settings["cactus"])
@@ -797,6 +850,8 @@ reset
 
 			if (vars.resetIL.Contains(current.checkPointString))
             {
+				if (vars.lastCutscene == "CS_SnowGlobe_Forest_Entrance_Intro")
+					return false;
 				if (old.checkPointString == "Forest Entry")
 					return false;
 				return true;
@@ -864,7 +919,10 @@ split
 
 		if (vars.postCutsceneSplits.Contains(vars.lastCutsceneOld))
 			return true;
-    }
+
+		if (vars.nextLoadSplits.Contains(vars.lastCutscene))
+			vars.splitNextLoad = true;
+	}
 
 	/*if (settings["optionalSplits"])
 	{
@@ -956,6 +1014,7 @@ init
     {
 		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_SnailRace_BP",
 		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_FountainPuzzle_BP",
+		"/Game/Maps/SnowGlobe/Lake/SnowGlobe_Lake_IceCave_BP",
 	};
 
     // vars.defaultSplitsCP = new List<string>(){"TerraceProposalCutscene",};
@@ -1268,8 +1327,8 @@ init
         "Final Explosion",
         "Sprint To Couple",
         "Clockwork Ending",
-        "Forest Entry",
-        "Gate",
+        //"Forest Entry",
+        //"Gate",
         "Timber",
         "Mill",
         "Flipper",
