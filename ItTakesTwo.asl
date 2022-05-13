@@ -100,7 +100,7 @@ startup
 
 	settings.CurrentDefaultParent = "depths";
 	settings.Add("minigameIntro", false, "Minigame Intro Cutscene");
-	settings.Add("preBossDoubleInteract", false, "Pre Boss Double Interact CP");
+	settings.Add("preBossDoubleInteract", false, "[Any%] Pre Boss Double Interact CP");
 	settings.Add("toolbossIntro", false, "Toolboss Intro Cutscene");
 	settings.Add("toolbossBattle", false, "Toolbox boss Battle Cutscene");
 
@@ -891,10 +891,10 @@ split
 
 	if (old.levelString != current.levelString)
     {
-		if (vars.levelSplits.Contains(current.levelString))
+		if (vars.levelSplits.Contains(current.levelString) && vars.oldLevelSplits.Contains(old.levelString))
         {
-			if (vars.levelSplitExceptions.Contains(old.levelString))
-				return false;
+			//if (vars.levelSplitExceptions.Contains(old.levelString))
+			//	return false;
 			return true;
 		}
 	
@@ -1015,6 +1015,59 @@ init
 		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_SnailRace_BP",
 		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_FountainPuzzle_BP",
 		"/Game/Maps/SnowGlobe/Lake/SnowGlobe_Lake_IceCave_BP",
+	};
+
+	vars.oldLevelSplits = new List<string>()
+    {
+		"/Game/Maps/Shed/Awakening/Awakening_BP",
+		"/Game/Maps/Shed/Vacuum/Vacuum_BP",
+		"/Game/Maps/Shed/Main/Main_Hammernails_BP",
+		"/Game/Maps/Shed/Main/Main_Bossfight_BP",
+		"/Game/Maps/Shed/Main/Main_Grindsection_BP",
+		"/Game/Maps/RealWorld/RealWorld_Shed_StarGazing_Meet_BP",
+		"/Game/Maps/Tree/SquirreTurf/SquirrelTurf_WarRoom_BP",
+		"/Game/Maps/Tree/SquirrelHome/SquirrelHome_BP_Mech",
+		"/Game/Maps/Tree/WaspNest/WaspsNest_BeetleRide_BP",
+		"/Game/Maps/Tree/SquirreTurf/SquirrelTurf_Flight_BP",
+		"/Game/Maps/RealWorld/RealWorld_Exterior_Roof_Crash_BP",
+		"/Game/Maps/PlayRoom/PillowFort/PillowFort_BP",
+		"/Game/Maps/RealWorld/Realworld_SpaceStation_Bossfight_BeamOut_BP",
+		"/Game/Maps/PlayRoom/Hopscotch/Kaleidoscope_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Trainstation_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Dinoland_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Pirate_BP",
+		"/Game/Maps/PlayRoom/Goldberg/Goldberg_Circus_BP",
+		"/Game/Maps/PlayRoom/Courtyard/Castle_Courtyard_BP",
+		"/Game/Maps/PlayRoom/Chessboard/Castle_Chessboard_BP",
+		"/Game/Maps/PlayRoom/Shelf/Shelf_BP",
+		"/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Time_BP",
+		"/Game/Maps/Clockwork/Outside/Clockwork_ClockTowerCourtyard_BP",
+		"/Game/Maps/Clockwork/Outside/Clockwork_Forest_BP",
+		"/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_CuckooBirdRoom_BP",
+		"/Game/Maps/Clockwork/LowerTower/Clockwork_ClockTowerLower_EvilBirdRoom_BP",
+		"/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Attraction_BP",
+		"/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP",
+		"/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_TownGate_BP",
+		"/Game/Maps/SnowGlobe/Town/SnowGlobe_Town_BobSled",
+		"/Game/Maps/SnowGlobe/Lake/Snowglobe_Lake_BP",
+		"/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Garden_BP",
+		"/Game/Maps/Garden/VegetablePatch/Garden_VegetablePatch_BP",
+		"/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_SecondCombat_BP",
+		"/Game/Maps/Garden/Shrubbery/Garden_Shrubbery_BP",
+		"/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Chase_BP",
+		"/Game/Maps/Garden/MoleTunnels/Garden_MoleTunnels_Stealth_BP",
+		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_BP",
+		"/Game/Maps/TherapyRoom/TherapyRoom_Session_Theme_Music_BP",
+		"/Game/Maps/Music/ConcertHall/Music_ConcertHall_BP",
+		"/Game/Maps/Music/Nightclub/Music_Nightclub_BP",
+
+		"/Game/Maps/Tree/WaspNest/WaspsNest_BP",
+		"/Game/Maps/Tree/Boat/Tree_Boat_BP",
+		"/Game/Maps/Tree/Darkroom/Tree_Darkroom_BP",
+		"/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP",
+		"/Game/Maps/PlayRoom/Hopscotch/VoidWorld_BP",
+		"/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_BP",
+		"/Game/Maps/PlayRoom/Dungeon/Castle_Dungeon_Charger_BP",
 	};
 
     // vars.defaultSplitsCP = new List<string>(){"TerraceProposalCutscene",};
