@@ -107,36 +107,37 @@ update
 	if (current.cutsceneString == null) vars.lastCutscene = "null";
 	if (current.cutsceneString != null && current.cutsceneString.Length > 1) vars.lastCutscene = current.cutsceneString;
 
-	if (current.checkPointString == "Side Scroller")
-		vars.vacuumSidescroller = true;
-
 	if (old.checkPointString != current.checkPointString)
-		print(current.checkPointString);
+    {
+		vars.CPSub = current.checkPointString + " " + current.subchapterString;
+		print("CPSub: " + vars.CPSub);
+		print("CP: " + current.checkPointString);
+	}
+		
 
 	if (settings["cpCount"])
     {
-		if (old.checkPointString == "TherapyRoom_Attraction_Session" && current.checkPointString == "Forest Entry")
-			vars.checkpointCount += 2;
-
 		if (current.checkPointString != old.checkPointString && vars.cpList.Contains(current.checkPointString) && 
-			old.checkPointString != "MINIGAME_Rodeo" && old.checkPointString != "Main Menu" && old.checkPointString != "Awakening_ChaseFuses")
+			old.checkPointString != "Main Menu")
         {
-			if (vars.vacuumSidescroller && (current.checkPointString == "VacuumIntro" || current.checkPointString == "VacuumNoIntro"))
+			// If CP has been obtained, ignore the rest
+			if (vars.obtainedCPs.Contains(vars.CPSub))
 				return;
 
-			if (current.checkPointString == "GrindSection_Start" || /*current.checkPointString == "StartWaspBossPhase1" ||*/ 
-				current.checkPointString == "Pirate_Part09_BossEnd" || current.checkPointString == "Tower Courtyard" ||
-				current.checkPointString == "Statue Room - Both Side Rooms Completed" || current.checkPointString == "Boss Intro")
-            {
+			// Count these CPs twice
+			if (vars.cpDouble.Contains(current.checkPointString))
 				vars.checkpointCount++;
-            }
+
+			// Count this CP twice
 			if (current.checkPointString == "Intro" && current.levelString == "/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP")
-            {
 				vars.checkpointCount++;
-			}
-				vars.checkpointCount++;
+
+			// Add CP to list and count once
+			vars.obtainedCPs.Add(vars.CPSub);
+			vars.checkpointCount++;
 		}
 
+		// Update CP counter
 		vars.SetTextComponent("CP: ", vars.checkpointCount.ToString() + "/" + (vars.cpListCount));
 	}
 
@@ -166,47 +167,49 @@ onStart
 	vars.iceCaveDone = 0;
 	vars.splitNextLoad = false;
 	vars.cutsceneAmount = 0;
-	vars.vacuumSidescroller = false;
-
-	if (vars.checkpointCount != 1)
-		vars.checkpointCount = 1;
-
-	if (current.levelString == "/Game/Maps/SnowGlobe/Forest/SnowGlobe_Forest_BP")
-		vars.checkpointCount = 2;
-
-	if (settings["levelReset"] && current.checkPointString != "Main Menu")
-	{
-		if (current.chapterString == "Shed")
-			vars.cpListCount = 37;
-
-		if (current.chapterString == "Tree")
-			vars.cpListCount = 56;
-
-		if (current.chapterString == "PlayRoom")
-			vars.cpListCount = 75;
-
-		if (current.chapterString == "Clockwork")
-			vars.cpListCount = 33;
-
-		if (current.chapterString == "SnowGlobe")
-			vars.cpListCount = 24;
-
-		if (current.chapterString == "Garden")
-			vars.cpListCount = 55;
-
-		if (current.chapterString == "Music")
-			vars.cpListCount = 45;
-	}
-	else
-	{
-		vars.cpListCount = 325;
-	}
 
 	vars.cutsceneSplits.Clear();
 	vars.postCutsceneSplits.Clear();
 	vars.checkpointSplits.Clear();
 	vars.levelSplits.Clear();
 	vars.nextLoadSplits.Clear();
+
+	if (settings["cpCount"])
+	{
+		if (vars.checkpointCount != 1)
+			vars.checkpointCount = 1;
+
+		if (settings["levelReset"] && current.checkPointString != "Main Menu")
+		{
+			if (current.chapterString == "Shed")
+				vars.cpListCount = 37;
+
+			if (current.chapterString == "Tree")
+				vars.cpListCount = 56;
+
+			if (current.chapterString == "PlayRoom")
+				vars.cpListCount = 75;
+
+			if (current.chapterString == "Clockwork")
+				vars.cpListCount = 32;
+
+			if (current.chapterString == "SnowGlobe")
+				vars.cpListCount = 24;
+
+			if (current.chapterString == "Garden")
+				vars.cpListCount = 55;
+
+			if (current.chapterString == "Music")
+				vars.cpListCount = 45;
+		}
+		else
+		{
+			vars.cpListCount = 324;
+		}
+
+		vars.obtainedCPs.Clear();
+		vars.obtainedCPs.Add(vars.CPSub);
+	}
 
 	if (settings["defaultSplits"])
 	{
@@ -536,6 +539,12 @@ onStart
 		if (settings["audioSurf"])
 			vars.checkpointSplits.Add("AudioSurf");
 	}
+
+	if (settings["commGold"])
+    {
+		vars.resetCommCP = current.checkPointString;
+		print("resetCommCP: " + vars.resetCommCP);
+	}
 }
 
 start
@@ -571,20 +580,17 @@ reset
 				if (old.checkPointString == "Forest Entry")
 					return false;
 				return true;
-			}
-				
+			}	
         }
 
 		if (settings["commGold"])
 		{
-			if (vars.resetComm.Contains(current.checkPointString))
-            {
-				if (vars.lastCutscene == "CS_Tree_Hive_Boss_Meet")
-					return false;
+			if (current.checkPointString == vars.resetCommCP)
+			{
 				if (vars.resetCommException.Contains(old.checkPointString))
 					return false;
-				if (old.checkPointString == "Intro" && current.levelString == "/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP")
-					return false;
+
+				print("commGold reset");
 				return true;
 			}
 		}
@@ -608,22 +614,14 @@ split
 	if (old.levelString != current.levelString)
     {
 		if (vars.levelSplits.Contains(current.levelString) && vars.oldLevelSplits.Contains(old.levelString))
-        {
-			//if (vars.levelSplitExceptions.Contains(old.levelString))
-			//	return false;
 			return true;
-		}
 	
     }
 
 	if (old.subchapterString != current.subchapterString)
     {
 		if (vars.levelSplits.Contains(current.subchapterString) && vars.oldLevelSplits.Contains(old.subchapterString))
-		{
-			//if (vars.levelSplitExceptions.Contains(old.levelString))
-			//	return false;
 			return true;
-		}
 	}
 
 	if (old.checkPointString != current.checkPointString)
@@ -649,27 +647,6 @@ split
 		if (vars.nextLoadSplits.Contains(vars.lastCutscene))
 			vars.splitNextLoad = true;
 	}
-
-	/*if (settings["optionalSplits"])
-	{
-		// Beneath the Ice
-		// Ice Cave Done
-		if (vars.iceCaveDone == 0 && old.checkPointString != current.checkPointString && current.checkPointString == "CoreBase")
-		{
-			vars.iceCaveDone = 1;
-			if (settings["iceCave"])
-			{
-				vars.splitNextLoad = true;
-			}
-		}
-
-		// Fish Done
-		if (settings["fish"] && vars.iceCaveDone == 1 && current.checkPointString == "CoreBase" && old.isLoading && !current.isLoading)
-		{
-			vars.iceCaveDone = 2;
-			vars.splitNextLoad = true;
-		}
-	}*/
 }
 
 init
@@ -685,7 +662,8 @@ init
 	vars.iceCaveDone = 0;
 	vars.cutsceneAmount = 0;
 	vars.cpListCount = 0;
-	vars.vacuumSidescroller = false;
+	vars.resetCommCP = "";
+	vars.CPSub = "";
 
 }
 
@@ -723,260 +701,261 @@ startup
 	});
 
 	// Optional Settings
-	settings.Add("defaultSplits", true, "Default Splits");
-	settings.Add("intermediaries", true, "Intermediaries");
-	//settings.Add("ending", true, "Split on kiss (end of run)");
+	{
+		settings.Add("defaultSplits", true, "Default Splits");
+		settings.Add("intermediaries", true, "Intermediaries");
+		//settings.Add("ending", true, "Split on kiss (end of run)");
 
-	settings.Add("optionalSettings", false, "Optional Settings");
-	settings.CurrentDefaultParent = "optionalSettings";
-	settings.Add("cpCount", false, "Checkpoint Counter");
-	settings.SetToolTip("cpCount", "Toggles a checkpoint counter in your overlay. Useful for 100%.");
-	settings.Add("commGold", false, "Comm Gold Resets");
-	settings.SetToolTip("commGold", "Turns on Comm Gold resets.");
-	settings.Add("levelReset", false, "IL Mode");
-	settings.SetToolTip("levelReset", "Turns on IL behaviour, like IL Resets");
-	settings.Add("newTimer", false, "Experimental new timer that 'removes' ping");
-	settings.SetToolTip("newTimer",
-		"This removes up to 4 seconds in skippable cutscenes, \n" +
-		"and resumes time either when the 4 seconds run out or the cutscene is skipped. \n" +
-		"This should make IGT more fair, no matter who you play with across the world.");
-
-
-
-	// Optional Splits
-	settings.CurrentDefaultParent = null;
-	settings.Add("optionalSplits", false, "Optional Splits");
-
-	settings.CurrentDefaultParent = "optionalSplits";
-	settings.Add("shed", false, "The Shed");
-	settings.Add("tree", false, "The Tree");
-	settings.Add("rose", false, "Rose's Room");
-	settings.Add("clock", false, "Cuckoo Clock");
-	settings.Add("snow", false, "Snow Globe");
-	settings.Add("garden", false, "Garden");
-	settings.Add("attic", false, "The Attic");
-
-	settings.CurrentDefaultParent = "shed";
-	settings.Add("biting", false, "Biting the Dust");
-	settings.Add("depths", false, "The Depths");
-	settings.Add("wired", false, "Wired Up");
-
-	settings.CurrentDefaultParent = "biting";
-	settings.Add("sidescrollerCP", false, "Side Scroller RCP");
-	settings.Add("vacuumBattle", false, "Vacuum Battle Cutscene");
-
-	settings.CurrentDefaultParent = "depths";
-	settings.Add("minigameIntro", false, "Minigame Intro Cutscene");
-	settings.Add("preBossDoubleInteract", false, "Pre Boss Double Interact CP");
-	settings.Add("toolbossIntro", false, "Toolboss Intro Cutscene");
-	settings.Add("toolbossBattle", false, "Toolbox boss Battle Cutscene");
-
-	settings.CurrentDefaultParent = "wired";
-
-	settings.CurrentDefaultParent = "tree";
-	settings.Add("fresh", false, "Fresh Air");
-	settings.Add("captured", false, "Captured");
-	settings.Add("rooted", false, "Deeply Rooted");
-	settings.Add("extermination", false, "Extermination");
-	settings.Add("getaway", false, "Getaway");
-
-	settings.CurrentDefaultParent = "fresh";
-
-	settings.CurrentDefaultParent = "captured";
-	settings.Add("tug", false, "Tug of War");
-
-	settings.CurrentDefaultParent = "rooted";
-	settings.Add("boatStart", false, "Boat Start");
-	settings.Add("boatSwarm", false, "Boat Swarm CP");
-	settings.Add("darkroomStart", false, "Darkroom Start");
-	settings.Add("secondLantern", false, "Second Lantern");
-	settings.Add("thirdLantern", false, "Third Lantern");
-	settings.Add("beetleElevator", false, "Beetle Elevator");
-	settings.Add("beetleArena", false, "Beetle Arena");
-
-	settings.CurrentDefaultParent = "extermination";
-	settings.Add("planeIntro", false, "Plane Intro");
-	settings.Add("smashWood", false, "Smash In Wood");
-
-	settings.CurrentDefaultParent = "getaway";
-	settings.Add("gliderHalfway", false, "Glider halfway through");
-
-	settings.CurrentDefaultParent = "rose";
-	settings.Add("pillow", false, "Pillow Fort");
-	settings.Add("spaced", false, "Spaced Out");
-	settings.Add("hopscotch", false, "Hopscotch");
-	settings.Add("train", false, "Train Station");
-	settings.Add("dino", false, "Dino Land");
-	settings.Add("pirates", false, "Pirates Ahoy");
-	settings.Add("circus", false, "The Greatest Show");
-	settings.Add("castle", false, "Once Upon a Time");
-	settings.Add("dungeon", false, "Dungeon Crawler");
-	settings.Add("queen", false, "The Queen");
-
-	settings.CurrentDefaultParent = "pillow";
-	settings.Add("pillowDolls", false, "Doll Room Cutscene");
-	settings.Add("pillowFinal", false, "Final Room");
-
-	settings.CurrentDefaultParent = "spaced";
-	settings.Add("firstPlatform", false, "First Portal Platform");
-	settings.Add("greenPortal", false, "Green Portal Ending");
-	settings.Add("redPortal", false, "Red Portal Ending");
-	settings.Add("purplePortal", false, "Purple Portal Ending");
-	settings.Add("umbrellaPortal", false, "Umbrella Portal Ending");
-	settings.Add("pillowPortal", false, "Pillow Portal Ending");
-	settings.Add("cubePortal", false, "Cube Portal Ending");
-	settings.Add("laserPointer", false, "Laser Pointer CP");
-	settings.Add("rocketPhase", false, "Rocket Phase CP");
-	settings.Add("insideUFO", false, "UFO Start");
-	settings.Add("eject", false, "UFO Eject Button");
-
-	settings.CurrentDefaultParent = "hopscotch";
-	settings.Add("grind", false, "Grind Section CP");
-	settings.Add("closet", false, "Closet CP");
-	settings.Add("homework", false, "Homework Section");
-	settings.Add("marble", false, "Marble Maze Room");
-	settings.Add("hopDungeon", false, "Hopscotch Dungeon CP");
-	settings.Add("fidget", false, "Fidget Spinners CP");
-	settings.Add("void", false, "Void World");
-	settings.Add("kaleidoscope", false, "Kaleidoscope");
-
-	settings.CurrentDefaultParent = "train";
-
-	settings.CurrentDefaultParent = "dino";
-	settings.Add("pteranodon", false, "Pteranodon Crash");
-
-	settings.CurrentDefaultParent = "pirates";
-	settings.Add("corridor", false, "Corridor CP");
-	settings.Add("ships", false, "Ships Intro");
-	settings.Add("stream", false, "Stream CP");
-	settings.Add("pirateBoss", false, "Boss Intro");
-
-	settings.CurrentDefaultParent = "circus";
-	settings.Add("carousel", false, "Carousel CP");
-	settings.Add("trapeeze", false, "Trapeeze CP");
-
-	settings.CurrentDefaultParent = "castle";
-	settings.Add("crane", false, "Crane Puzzle");
-
-	settings.CurrentDefaultParent = "dungeon";
-	settings.Add("postDrawbridge", false, "Post Drawbridge");
-	settings.Add("postTeleporter", false, "Teleporter Boss Defeated");
-	settings.Add("crusherIntro", false, "Crusher Intro");
-	settings.Add("chess", false, "Chess Intro");
-
-	settings.CurrentDefaultParent = "queen";
-
-	settings.CurrentDefaultParent = "clock";
-	settings.Add("gates", false, "Gates of Time");
-	settings.Add("clockworks", false, "Clockworks");
-	settings.Add("blast", false, "A Blast from the Past");
-
-	settings.CurrentDefaultParent = "gates";
-	settings.Add("clocktown", false, "Clocktown Intro");
-	settings.Add("hellTower", false, "Hell Tower");
-	settings.Add("birdIntro", false, "Bird Intro");
-	settings.Add("rightTowerDestroyed", false, "Right Tower Destroyed");
-
-	settings.CurrentDefaultParent = "clockworks";
-	settings.Add("statue", false, "Statue Room");
-	settings.Add("wallJump", false, "Wall Jump Corridor");
-	settings.Add("pocketWatch", false, "Pocket Watch Room");
-
-	settings.CurrentDefaultParent = "blast";
-	settings.Add("afterRewindSmash", false, "After Rewind Smash");
-
-	settings.CurrentDefaultParent = "snow";
-	settings.Add("warming", false, "Warming Up");
-	settings.Add("village", false, "Winter Village");
-	settings.Add("bti", false, "Beneath the Ice");
-	settings.Add("slopes", false, "Slippery Slopes");
-
-	settings.CurrentDefaultParent = "warming";
-	settings.Add("timber", false, "Timber");
-	settings.Add("mill", false, "Mill (Cody CP)");
-	settings.Add("flipper", false, "Flipper (May CP)");
-	settings.Add("cabin", false, "Cabin");
-
-	settings.CurrentDefaultParent = "village";
-	settings.Add("townDoor", false, "Town Door");
-	settings.Add("bobsledCP", false, "Bobsled CP");
-	settings.SetToolTip("bobsledCP",
-		"This can trigger 2 places: When you hit the trigger on the mountain, like in Any%. \n" +
-		"Or when you interact with the cablecar, this is the one that gives you the actual CP.");
+		settings.Add("optionalSettings", false, "Optional Settings");
+		settings.CurrentDefaultParent = "optionalSettings";
+		settings.Add("cpCount", false, "Checkpoint Counter");
+		settings.SetToolTip("cpCount", "Toggles a checkpoint counter in your overlay. Useful for 100%.");
+		settings.Add("commGold", false, "Comm Gold Resets");
+		settings.SetToolTip("commGold", "Turns on Comm Gold resets.");
+		settings.Add("levelReset", false, "IL Mode");
+		settings.SetToolTip("levelReset", "Turns on IL behaviour, like IL Resets");
+		settings.Add("newTimer", false, "Experimental new timer that 'removes' ping");
+		settings.SetToolTip("newTimer",
+			"This removes up to 4 seconds in skippable cutscenes, \n" +
+			"and resumes time either when the 4 seconds run out or the cutscene is skipped. \n" +
+			"This should make IGT more fair, no matter who you play with across the world.");
 
 
-	settings.CurrentDefaultParent = "bti";
-	settings.Add("iceCave", false, "Ice Cave Finish CS");
-	settings.Add("lakeIceCave", false, "Lake Ice Cave RCP (100%)");
-	//settings.Add("fish", false, "Fish RCP (Doesn't work atm)");
 
-	settings.CurrentDefaultParent = "slopes";
-	settings.Add("iceCaveSlopes", false, "Ice Cave");
-	settings.Add("caveSkating", false, "Cave Skating");
-	settings.Add("collapse", false, "Collapse");
-	settings.Add("playerAttraction", false, "Player Attraction");
-	settings.Add("windWalk", false, "Wind Walk");
+		// Optional Splits
+		settings.CurrentDefaultParent = null;
+		settings.Add("optionalSplits", false, "Optional Splits");
 
-	settings.CurrentDefaultParent = "garden";
-	settings.Add("fingers", false, "Green Fingers");
-	settings.Add("weed", false, "Weed Whacking");
-	settings.Add("trespassing", false, "Trespassing");
-	settings.Add("frog", false, "Frog Pond");
-	settings.Add("affliction", false, "Affliction");
+		settings.CurrentDefaultParent = "optionalSplits";
+		settings.Add("shed", false, "The Shed");
+		settings.Add("tree", false, "The Tree");
+		settings.Add("rose", false, "Rose's Room");
+		settings.Add("clock", false, "Cuckoo Clock");
+		settings.Add("snow", false, "Snow Globe");
+		settings.Add("garden", false, "Garden");
+		settings.Add("attic", false, "The Attic");
 
-	settings.CurrentDefaultParent = "fingers";
-	settings.Add("cactus", false, "Cactus Combat Area");
-	settings.Add("beanstalk", false, "Beanstalk Section");
-	settings.Add("burrown", false, "Burrown Enemy");
-	settings.Add("window", false, "Greenhouse Window");
+		settings.CurrentDefaultParent = "shed";
+		settings.Add("biting", false, "Biting the Dust");
+		settings.Add("depths", false, "The Depths");
+		settings.Add("wired", false, "Wired Up");
 
-	settings.CurrentDefaultParent = "weed";
-	settings.Add("spiderFight", false, "First combat area cutscene");
-	settings.Add("secondSpider", false, "Second Spider");
-	settings.Add("sinkingLog", false, "Sinking Log");
-	settings.Add("finalCombat", false, "Starting Final Combat RCP");
-	settings.Add("cactusWaves", false, "Cactus Waves Intro");
+		settings.CurrentDefaultParent = "biting";
+		settings.Add("sidescrollerCP", false, "Side Scroller RCP");
+		settings.Add("vacuumBattle", false, "Vacuum Battle Cutscene");
 
-	settings.CurrentDefaultParent = "trespassing";
-	settings.Add("stealthStart", false, "Stealth Start CP");
-	settings.Add("moleChase", false, "Mole Chase start");
-	settings.Add("mole2D", false, "Mole 2D start");
-	settings.Add("gnome", false, "Gnome CP");
+		settings.CurrentDefaultParent = "depths";
+		settings.Add("minigameIntro", false, "Minigame Intro Cutscene");
+		settings.Add("preBossDoubleInteract", false, "Pre Boss Double Interact CP");
+		settings.Add("toolbossIntro", false, "Toolboss Intro Cutscene");
+		settings.Add("toolbossBattle", false, "Toolbox boss Battle Cutscene");
 
-	settings.CurrentDefaultParent = "frog";
-	settings.Add("topFountainBulb", false, "Top Fountain Bulb CS");
-	settings.Add("snail", false, "Snail Race");
+		settings.CurrentDefaultParent = "wired";
 
-	settings.CurrentDefaultParent = "affliction";
-	settings.Add("firstBulb", false, "First Bulb Exploded");
-	settings.Add("joyIntro", false, "Joy Intro");
-	settings.Add("joyPhase2", false, "Joy Phase 2");
-	settings.Add("joyPhase3", false, "Joy Phase 3");
+		settings.CurrentDefaultParent = "tree";
+		settings.Add("fresh", false, "Fresh Air");
+		settings.Add("captured", false, "Captured");
+		settings.Add("rooted", false, "Deeply Rooted");
+		settings.Add("extermination", false, "Extermination");
+		settings.Add("getaway", false, "Getaway");
 
-	settings.CurrentDefaultParent = "attic";
-	settings.Add("stage", false, "Setting the Stage");
-	settings.Add("rehearsal", false, "Rehearsal");
-	settings.Add("symphony", false, "Symphony");
-	settings.Add("turnUp", false, "Turn Up");
-	settings.Add("finale", false, "A Grand Finale");
+		settings.CurrentDefaultParent = "fresh";
 
-	settings.CurrentDefaultParent = "stage";
-	settings.Add("trackRunner", false, "Track Runner");
+		settings.CurrentDefaultParent = "captured";
+		settings.Add("tug", false, "Tug of War");
 
-	settings.CurrentDefaultParent = "rehearsal";
+		settings.CurrentDefaultParent = "rooted";
+		settings.Add("boatStart", false, "Boat Start");
+		settings.Add("boatSwarm", false, "Boat Swarm CP");
+		settings.Add("darkroomStart", false, "Darkroom Start");
+		settings.Add("secondLantern", false, "Second Lantern");
+		settings.Add("thirdLantern", false, "Third Lantern");
+		settings.Add("beetleElevator", false, "Beetle Elevator");
+		settings.Add("beetleArena", false, "Beetle Arena");
 
-	settings.CurrentDefaultParent = "symphony";
+		settings.CurrentDefaultParent = "extermination";
+		settings.Add("planeIntro", false, "Plane Intro");
+		settings.Add("smashWood", false, "Smash In Wood");
 
-	settings.CurrentDefaultParent = "turnUp";
-	settings.Add("djElevator", false, "DJ Elevator");
-	settings.Add("audioSurf", false, "Audio Surf");
+		settings.CurrentDefaultParent = "getaway";
+		settings.Add("gliderHalfway", false, "Glider halfway through");
 
-	settings.CurrentDefaultParent = "finale";
+		settings.CurrentDefaultParent = "rose";
+		settings.Add("pillow", false, "Pillow Fort");
+		settings.Add("spaced", false, "Spaced Out");
+		settings.Add("hopscotch", false, "Hopscotch");
+		settings.Add("train", false, "Train Station");
+		settings.Add("dino", false, "Dino Land");
+		settings.Add("pirates", false, "Pirates Ahoy");
+		settings.Add("circus", false, "The Greatest Show");
+		settings.Add("castle", false, "Once Upon a Time");
+		settings.Add("dungeon", false, "Dungeon Crawler");
+		settings.Add("queen", false, "The Queen");
 
-	// DEBUG
-	settings.CurrentDefaultParent = null;
-	settings.Add("debugTextComponents", false, "[DEBUG] Show tracked values in layout");
+		settings.CurrentDefaultParent = "pillow";
+		settings.Add("pillowDolls", false, "Doll Room Cutscene");
+		settings.Add("pillowFinal", false, "Final Room");
 
+		settings.CurrentDefaultParent = "spaced";
+		settings.Add("firstPlatform", false, "First Portal Platform");
+		settings.Add("greenPortal", false, "Green Portal Ending");
+		settings.Add("redPortal", false, "Red Portal Ending");
+		settings.Add("purplePortal", false, "Purple Portal Ending");
+		settings.Add("umbrellaPortal", false, "Umbrella Portal Ending");
+		settings.Add("pillowPortal", false, "Pillow Portal Ending");
+		settings.Add("cubePortal", false, "Cube Portal Ending");
+		settings.Add("laserPointer", false, "Laser Pointer CP");
+		settings.Add("rocketPhase", false, "Rocket Phase CP");
+		settings.Add("insideUFO", false, "UFO Start");
+		settings.Add("eject", false, "UFO Eject Button");
+
+		settings.CurrentDefaultParent = "hopscotch";
+		settings.Add("grind", false, "Grind Section CP");
+		settings.Add("closet", false, "Closet CP");
+		settings.Add("homework", false, "Homework Section");
+		settings.Add("marble", false, "Marble Maze Room");
+		settings.Add("hopDungeon", false, "Hopscotch Dungeon CP");
+		settings.Add("fidget", false, "Fidget Spinners CP");
+		settings.Add("void", false, "Void World");
+		settings.Add("kaleidoscope", false, "Kaleidoscope");
+
+		settings.CurrentDefaultParent = "train";
+
+		settings.CurrentDefaultParent = "dino";
+		settings.Add("pteranodon", false, "Pteranodon Crash");
+
+		settings.CurrentDefaultParent = "pirates";
+		settings.Add("corridor", false, "Corridor CP");
+		settings.Add("ships", false, "Ships Intro");
+		settings.Add("stream", false, "Stream CP");
+		settings.Add("pirateBoss", false, "Boss Intro");
+
+		settings.CurrentDefaultParent = "circus";
+		settings.Add("carousel", false, "Carousel CP");
+		settings.Add("trapeeze", false, "Trapeeze CP");
+
+		settings.CurrentDefaultParent = "castle";
+		settings.Add("crane", false, "Crane Puzzle");
+
+		settings.CurrentDefaultParent = "dungeon";
+		settings.Add("postDrawbridge", false, "Post Drawbridge");
+		settings.Add("postTeleporter", false, "Teleporter Boss Defeated");
+		settings.Add("crusherIntro", false, "Crusher Intro");
+		settings.Add("chess", false, "Chess Intro");
+
+		settings.CurrentDefaultParent = "queen";
+
+		settings.CurrentDefaultParent = "clock";
+		settings.Add("gates", false, "Gates of Time");
+		settings.Add("clockworks", false, "Clockworks");
+		settings.Add("blast", false, "A Blast from the Past");
+
+		settings.CurrentDefaultParent = "gates";
+		settings.Add("clocktown", false, "Clocktown Intro");
+		settings.Add("hellTower", false, "Hell Tower");
+		settings.Add("birdIntro", false, "Bird Intro");
+		settings.Add("rightTowerDestroyed", false, "Right Tower Destroyed");
+
+		settings.CurrentDefaultParent = "clockworks";
+		settings.Add("statue", false, "Statue Room");
+		settings.Add("wallJump", false, "Wall Jump Corridor");
+		settings.Add("pocketWatch", false, "Pocket Watch Room");
+
+		settings.CurrentDefaultParent = "blast";
+		settings.Add("afterRewindSmash", false, "After Rewind Smash");
+
+		settings.CurrentDefaultParent = "snow";
+		settings.Add("warming", false, "Warming Up");
+		settings.Add("village", false, "Winter Village");
+		settings.Add("bti", false, "Beneath the Ice");
+		settings.Add("slopes", false, "Slippery Slopes");
+
+		settings.CurrentDefaultParent = "warming";
+		settings.Add("timber", false, "Timber");
+		settings.Add("mill", false, "Mill (Cody CP)");
+		settings.Add("flipper", false, "Flipper (May CP)");
+		settings.Add("cabin", false, "Cabin");
+
+		settings.CurrentDefaultParent = "village";
+		settings.Add("townDoor", false, "Town Door");
+		settings.Add("bobsledCP", false, "Bobsled CP");
+		settings.SetToolTip("bobsledCP",
+			"This can trigger 2 places: When you hit the trigger on the mountain, like in Any%. \n" +
+			"Or when you interact with the cablecar, this is the one that gives you the actual CP.");
+
+
+		settings.CurrentDefaultParent = "bti";
+		settings.Add("iceCave", false, "Ice Cave Finish CS");
+		settings.Add("lakeIceCave", false, "Lake Ice Cave RCP (100%)");
+		//settings.Add("fish", false, "Fish RCP (Doesn't work atm)");
+
+		settings.CurrentDefaultParent = "slopes";
+		settings.Add("iceCaveSlopes", false, "Ice Cave");
+		settings.Add("caveSkating", false, "Cave Skating");
+		settings.Add("collapse", false, "Collapse");
+		settings.Add("playerAttraction", false, "Player Attraction");
+		settings.Add("windWalk", false, "Wind Walk");
+
+		settings.CurrentDefaultParent = "garden";
+		settings.Add("fingers", false, "Green Fingers");
+		settings.Add("weed", false, "Weed Whacking");
+		settings.Add("trespassing", false, "Trespassing");
+		settings.Add("frog", false, "Frog Pond");
+		settings.Add("affliction", false, "Affliction");
+
+		settings.CurrentDefaultParent = "fingers";
+		settings.Add("cactus", false, "Cactus Combat Area");
+		settings.Add("beanstalk", false, "Beanstalk Section");
+		settings.Add("burrown", false, "Burrown Enemy");
+		settings.Add("window", false, "Greenhouse Window");
+
+		settings.CurrentDefaultParent = "weed";
+		settings.Add("spiderFight", false, "First combat area cutscene");
+		settings.Add("secondSpider", false, "Second Spider");
+		settings.Add("sinkingLog", false, "Sinking Log");
+		settings.Add("finalCombat", false, "Starting Final Combat RCP");
+		settings.Add("cactusWaves", false, "Cactus Waves Intro");
+
+		settings.CurrentDefaultParent = "trespassing";
+		settings.Add("stealthStart", false, "Stealth Start CP");
+		settings.Add("moleChase", false, "Mole Chase start");
+		settings.Add("mole2D", false, "Mole 2D start");
+		settings.Add("gnome", false, "Gnome CP");
+
+		settings.CurrentDefaultParent = "frog";
+		settings.Add("topFountainBulb", false, "Top Fountain Bulb CS");
+		settings.Add("snail", false, "Snail Race");
+
+		settings.CurrentDefaultParent = "affliction";
+		settings.Add("firstBulb", false, "First Bulb Exploded");
+		settings.Add("joyIntro", false, "Joy Intro");
+		settings.Add("joyPhase2", false, "Joy Phase 2");
+		settings.Add("joyPhase3", false, "Joy Phase 3");
+
+		settings.CurrentDefaultParent = "attic";
+		settings.Add("stage", false, "Setting the Stage");
+		settings.Add("rehearsal", false, "Rehearsal");
+		settings.Add("symphony", false, "Symphony");
+		settings.Add("turnUp", false, "Turn Up");
+		settings.Add("finale", false, "A Grand Finale");
+
+		settings.CurrentDefaultParent = "stage";
+		settings.Add("trackRunner", false, "Track Runner");
+
+		settings.CurrentDefaultParent = "rehearsal";
+
+		settings.CurrentDefaultParent = "symphony";
+
+		settings.CurrentDefaultParent = "turnUp";
+		settings.Add("djElevator", false, "DJ Elevator");
+		settings.Add("audioSurf", false, "Audio Surf");
+
+		settings.CurrentDefaultParent = "finale";
+
+		// DEBUG
+		settings.CurrentDefaultParent = null;
+		settings.Add("debugTextComponents", false, "[DEBUG] Show tracked values in layout");
+	}
 
 	vars.optionalSplits = new List<string>() { };
 
@@ -1027,13 +1006,6 @@ startup
 	{
 		"CS_PlayRoom_DinoLand_DinoCrash_Intro",
 		"CS_PlayRoom_Circus_Balloon_Intro",
-	};
-
-	vars.levelSplitExceptions = new List<string>()
-	{
-		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_SnailRace_BP",
-		"/Game/Maps/Garden/FrogPond/Garden_FrogPond_FountainPuzzle_BP",
-		"/Game/Maps/SnowGlobe/Lake/SnowGlobe_Lake_IceCave_BP",
 	};
 
 	vars.oldLevelSplits = new List<string>()
@@ -1091,13 +1063,12 @@ startup
 		"SnowGlobe_Lake",
 	};
 
-	// vars.defaultSplitsCP = new List<string>(){"TerraceProposalCutscene",};
-
 	vars.cutsceneSplits = new List<string>() { };
 	vars.postCutsceneSplits = new List<string>() { };
 	vars.checkpointSplits = new List<string>() { };
 	vars.levelSplits = new List<string>() { };
 	vars.nextLoadSplits = new List<string>() { };
+	vars.obtainedCPs = new List<string>() { };
 
 	vars.resetIL = new List<string>()
 	{
@@ -1148,8 +1119,8 @@ startup
 		"LoadDinoLand",
 		"Pirate_Part09_BossEnd",
 		"Pirate_Part09_BossEndWithoutCutscene",
-		"GrindSection_Start",
-		"Boss Intro",
+		//"GrindSection_Start",
+		//"Boss Intro",
 	};
 
 	vars.startLevels = new List<string>()
@@ -1194,6 +1165,15 @@ startup
 		"/Game/Maps/Music/Classic/Music_Classic_Organ_BP",
 		"/Game/Maps/Music/Nightclub/Music_Nightclub_BP",
 		"/Game/Maps/Music/Ending/Music_Ending_BP"
+	};
+
+	vars.cpDouble = new List<string>()
+	{
+		"GrindSection_Start",
+		"Pirate_Part09_BossEnd",
+		"Tower Courtyard",
+		"Statue Room - Both Side Rooms Completed",
+		"Boss Intro",
 	};
 
 	vars.cpList = new List<string>()
@@ -1250,8 +1230,8 @@ startup
 		"Rails",
 		"Vault",
 		"Vault ShieldWasp",
-		//"Entry", // Same name as other subchapter
-		//"Entry (No cutscene)", // Same name as other subchapter
+		//"Entry", // Same name as other subchapter                       // FIX FOR CP COUNTER
+		//"Entry (No cutscene)", // Same name as other subchapter         // FIX FOR CP COUNTER
 		"Larva",
 		"Bottles",
 		"Swarm",
@@ -1280,8 +1260,8 @@ startup
 		"BeetleRide_Part3",
 		"BeetleRide_Part4",
 		"BeetleRide_Part5",
-		"StartWaspBossPhase1", // Count as 2 bc of below
-		//"StartWaspBossPhase1_NoCutscene", // You only get this from RCPing
+		"StartWaspBossPhase1",
+		"StartWaspBossPhase1_NoCutscene", // You only get this from RCPing        // FIX FOR CP COUNTER
 		"ShotOffFirstArmour",
 		"StartWaspBossPhase3",
 		"Intro",
@@ -1309,8 +1289,8 @@ startup
 		"MoonBaboonInsideUFO_Crusher",
 		"MoonBaboonInsideUFO_ElectricWall",
 		"MoonBaboonMoon",
-		//"Intro", // Same name as other subchapter // Count as 2 bc of below
-		//"Intro - No Cutscene", // Only obtained through RCP
+		//"Intro", // Same name as other subchapter // Count as 2 bc of below      // FIX FOR CP COUNTER
+		//"Intro - No Cutscene", // Only obtained through RCP                      // FIX FOR CP COUNTER
 		"Grind Section",
 		"Closet",
 		"Coathanger Ropeway",
@@ -1321,7 +1301,7 @@ startup
 		"First Ball Fall",
 		"Fidget Spinners",
 		"Fidget Spinner Tunnel",
-		//"Elevator", // Same name as other subchapter
+		//"Elevator", // Same name as other subchapter                               // FIX FOR CP COUNTER
 		"Void World",
 		"Spawning Floor",
 		"Kaleidoscope Intro",
@@ -1382,7 +1362,7 @@ startup
 		"Tower Courtyard", // Always obtained on the second tower destroyed, replacing the one above, count as 2
 		"Crusher Trap Room",
 		"Crusher Room - No Intro",
-		"Bridge",
+		//"Bridge", // Same name as other subchapter            // FIX FOR CP COUNTER
 		"Statue Room",
 		"Statue Room - Mech Wall Room Done",
 		"Statue Room - Cage Puzzle Done",
@@ -1391,7 +1371,7 @@ startup
 		"Wall Jump Corridor",
 		"Elevator Room",
 		"Pocket Watch Room",
-		"Path to Evil Bird",
+		//"Path to Evil Bird", // Not obtained in normal gameplay
 		"Evil Bird Room",
 		"Evil Bird Room Started",
 		"Boss Intro", // Count as 2 bc of below
@@ -1403,8 +1383,8 @@ startup
 		"Final Explosion",
 		"Sprint To Couple",
 		"Clockwork Ending",
-        //"Forest Entry",
-        //"Gate",
+        "Forest Entry",
+        "Gate",
         "Timber",
 		"Mill",
 		"Flipper",
@@ -1414,20 +1394,20 @@ startup
 		"Town Entry (No cutscene)",
 		"Town Door",
 		"Town Bobsled",
-		//"Entry", // Same name as other subchapter
-		//"Entry (No cutscene)", // Same name as other subchapter
+		//"Entry", // Same name as other subchapter                        // FIX FOR CP COUNTER
+		//"Entry (No cutscene)", // Same name as other subchapter          // FIX FOR CP COUNTER
 		"CoreBase",
 		"IceCave Complete",
 		"LakeIceCave",
 		"0. Entry",
-		//"Entry (No cutscene)", // Same name as other subchapter
+		//"Entry (No cutscene)", // Same name as other subchapter         // FIX FOR CP COUNTER
 		"1. IceCave",
 		"2. CaveSkating",
 		"3. Collapse",
 		"4. PlayerAttraction",
 		"5. WindWalk",
 		"TerraceProposalCutscene",
-		//"Intro", // Same name as other subchapter
+		//"Intro", // Same name as other subchapter                         // FIX FOR CP COUNTER
 		"Intro_NoCutscene",
 		"Cactus Combat Area",
 		"Beanstalk Section",
@@ -1462,7 +1442,7 @@ startup
 		"MoleTunnels_MoleChase_TopDown_SafeRoom",
 		"MoleTunnels_MoleChase_2D",
 		"MoleTunnels_MoleChase_2D_TreasureRoom",
-		//"Intro", // Same name as other subchapter
+		//"Intro", // Same name as other subchapter                          // FIX FOR CP COUNTER
 		"FrogPondIntroNoCS",
 		"LilyPads",
 		"Scale Puzzle",
@@ -1530,21 +1510,5 @@ startup
 		"EndingIntro",
 		"MayInDressingRoom",
 	};
-	/*	Shed       = 37
-		Tree       = 56
-		Roses Room = 75
-		Clock      = 33
-		Snow       = 24
-		Garden     = 55
-		Music      = 45
-
-		Total      = 325*/
-
-
-
-	/*
-	 * TO-DO LIST:
-	 * 
-	 */
 
 }
