@@ -1053,6 +1053,7 @@ startup
 		"/Game/Maps/Music/Nightclub/Music_Nightclub_BP",
 
 		"/Game/Maps/Tree/WaspNest/WaspsNest_BP",
+		"/Game/Maps/Tree/WaspNest/WaspsNest_Swarm_BP",
 		"/Game/Maps/Tree/Boat/Tree_Boat_BP",
 		"/Game/Maps/Tree/Darkroom/Tree_Darkroom_BP",
 		"/Game/Maps/PlayRoom/Hopscotch/Hopscotch_BP",
