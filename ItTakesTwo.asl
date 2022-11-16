@@ -1,30 +1,24 @@
-//Made by Ironhead39 and Hyper - Modified by Lemuura
-state("ItTakesTwo")
+state("ItTakesTwo", "1.3")
+{
+	bool isLoading: "ItTakesTwo.exe", 0x77EB6DC;
+	string255 levelString: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x368, 0x8, 0x1b8, 0x0;
+	string255 checkPointString: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x368, 0x8, 0x1d8, 0x0;
+	string255 chapterString: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x368, 0x8, 0x1e8, 0x0;
+	string255 subchapterString: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x368, 0x8, 0x1f8, 0x0;
+	string255 cutsceneString: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x2b0, 0x0, 0x390, 0x2a0, 0x788, 0x0;
+	byte skippable: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x2b0, 0x0, 0x390, 0x318;
+}
+
+state("ItTakesTwo", "1.2")
 {
 	bool isLoading: "ItTakesTwo.exe", 0x77E856C;
-	bool isCutscene: "ItTakesTwo.exe", 0x7610E98;
 	string255 levelString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1b8, 0x0;
 	string255 checkPointString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1d8, 0x0;
 	string255 chapterString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1e8, 0x0;
 	string255 subchapterString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1f8, 0x0;
 	string255 cutsceneString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x2b0, 0x0, 0x390, 0x2a0, 0x788, 0x0;
 	byte skippable: "ItTakesTwo.exe", 0x780e460, 0x180, 0x2b0, 0x0, 0x390, 0x318; // Any value above 0 is skippable
-	
 }
-
-state("ItTakesTwo_Trial")
-{
-	bool isLoading: "ItTakesTwo_Trial.exe", 0x77E856C;
-	bool isCutscene: "ItTakesTwo_Trial.exe", 0x7610E98;
-	string255 levelString: "ItTakesTwo_Trial.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1b8, 0x0;
-	string255 checkPointString: "ItTakesTwo_Trial.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1d8, 0x0;
-	string255 chapterString: "ItTakesTwo_Trial.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1e8, 0x0;
-	string255 subchapterString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1f8, 0x0;
-	string255 cutsceneString: "ItTakesTwo_Trial.exe", 0x780e460, 0x180, 0x2b0, 0x0, 0x390, 0x2a0, 0x788, 0x0;
-	byte skippable: "ItTakesTwo_Trial.exe", 0x780e460, 0x180, 0x2b0, 0x0, 0x390, 0x318;
-}
-
-// Startup is at the bottom of the script
 
 exit
 {
@@ -103,6 +97,8 @@ isLoading
 
 update
 {
+	
+
 	vars.lastCutsceneOld = vars.lastCutscene;
 	if (current.cutsceneString == null) vars.lastCutscene = "null";
 	if (current.cutsceneString != null && current.cutsceneString.Length > 1) vars.lastCutscene = current.cutsceneString;
@@ -651,6 +647,16 @@ split
 
 init
 {
+	print(modules.First().ModuleMemorySize.ToString());
+  	if (modules.First().ModuleMemorySize == 134217728){
+        version = "1.2";
+    } else if (modules.First().ModuleMemorySize == 134230016){
+        version = "1.3";
+    } else {
+        //Unknown version, assuming v1.2 as all older versions are compatible
+        version = "1.2";
+    }  
+
 	int cutsceneCount = 0; // Initialize cutscene counter
 	vars.delayTimer = 0;
 	vars.delayTimerTimestamp = 0;
