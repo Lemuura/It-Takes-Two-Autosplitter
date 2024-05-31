@@ -1,3 +1,14 @@
+state("ItTakesTwo", "1.4")
+{
+	bool isLoading: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x2b0, 0x0, 0x458, 0xf9;
+	string255 levelString: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x368, 0x8, 0x1b8, 0x0;
+	string255 checkPointString: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x368, 0x8, 0x1d8, 0x0;
+	string255 chapterString: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x368, 0x8, 0x1e8, 0x0;
+	string255 subchapterString: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x368, 0x8, 0x1f8, 0x0;
+	string255 cutsceneString: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x2b0, 0x0, 0x390, 0x2a0, 0x788, 0x0;
+	byte skippable: "ItTakesTwo.exe", 0x07A00020, 0x180, 0x2b0, 0x0, 0x390, 0x318;
+}
+
 state("ItTakesTwo", "1.3")
 {
 	bool isLoading: "ItTakesTwo.exe", 0x078115C0, 0x180, 0x2b0, 0x0, 0x458, 0xf9;
@@ -11,7 +22,7 @@ state("ItTakesTwo", "1.3")
 
 state("ItTakesTwo", "1.2")
 {
-	bool isLoading: "ItTakesTwo.exe", 0x77E856C;
+	bool isLoading: "ItTakesTwo.exe", 0x780e460, 0x180, 0x2b0, 0x0, 0x458, 0xf9;
 	string255 levelString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1b8, 0x0;
 	string255 checkPointString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1d8, 0x0;
 	string255 chapterString: "ItTakesTwo.exe", 0x780e460, 0x180, 0x368, 0x8, 0x1e8, 0x0;
@@ -653,8 +664,7 @@ init
     } else if (modules.First().ModuleMemorySize == 134230016){
         version = "1.3";
     } else {
-        //Unknown version, assuming v1.2 as all older versions are compatible
-        version = "1.2";
+        version = "1.4"; // 136282112
     }  
 
 	int cutsceneCount = 0; // Initialize cutscene counter
